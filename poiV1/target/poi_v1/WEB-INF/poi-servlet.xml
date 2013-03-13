@@ -16,6 +16,7 @@
 	
 	<mvc:annotation-driven/>
 	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/resource/**" location="/resource/" />
 	
 	<context:annotation-config />
 	<context:component-scan base-package="org.mercury.poiV1" />
