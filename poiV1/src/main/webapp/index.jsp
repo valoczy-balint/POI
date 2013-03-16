@@ -27,6 +27,8 @@
     	</div>
    	  	<div class="menu_item"><a href="/poi/manage">Manage</a>
     	</div>
+   	  	<div class="menu_item"><a href="/poi/register">Register</a>
+    	</div>
     </div>
     <div id="content">CONTENT
     </div>

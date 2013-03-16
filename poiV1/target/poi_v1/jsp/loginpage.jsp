@@ -8,7 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Login</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+	var jq = jQuery.noConflict();
+</script>
 </head>
 <body>
 
@@ -29,6 +33,42 @@
 		<input type="submit" value="Login" />
 
 	</form>
+	
+	<div id="register">
+		<h1>Register new user</h1>
+		<form>
+			<p>
+				<label>Username</label>
+				<input type="text" id="username" /> 
+			</p>
+			
+			<p>
+				<label>Password</label>
+				<input type="password" id="password" />  
+			</p>
+			
+			<p>
+				<input type="button" value="Register" onclick="register()"/> 
+			</p>
+		</form>
+	</div>
+	
+	<script type="text/javascript"> 
+	
+	function register() {
+		jq(function() {
+			jq.post("/poi/register",	
+					{ 	
+						username:  jq("#username").val(),
+						password:  jq("#password").val()
+					},
+					function(data){
+						jq("#register").replaceWith('<div id="result">'+ data + '</div>');
+					});
+		});
+	}
+	
+	</script>
 
 </body>
 </html>

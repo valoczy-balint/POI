@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javassist.NotFoundException;
+
 import org.apache.log4j.Logger;
 import org.mercury.poi.dao.Dao;
 import org.mercury.poi.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,16 +25,15 @@ public class SecurityService implements UserDetailsService {
 
 	protected static Logger logger = Logger.getLogger("Security Service");
 	
-	@Autowired
-	Dao securityDao; 
+	Dao dao; 
 
-	/*public Dao getDao() {
-		return securityDao;
+	public Dao getDao() {
+		return dao;
 	}
 
 	public void setDao(Dao dao) {
-		this.securityDao = dao;
-	}*/
+		this.dao = dao;
+	}
 
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException, DataAccessException {
@@ -41,7 +42,7 @@ public class SecurityService implements UserDetailsService {
 		UserDetails user = null;
 		
 		try {
-			User dbUser = securityDao.getUser(username);
+			User dbUser = dao.getUser(username);
 			user = new org.springframework.security.core.userdetails.User(
 					dbUser.getUsername(), 
 					dbUser.getPassword().toLowerCase(),
@@ -51,9 +52,10 @@ public class SecurityService implements UserDetailsService {
 					true,
 					getAuthorities(dbUser.getAccess()) );
 			logger.info(dbUser.getUsername() + " " + dbUser.getPassword().toLowerCase() + getAuthorities(dbUser.getAccess()));
+		} catch (NotFoundException e) {
+			logger.error("Error in retrieving user", e);
 		} catch (Exception e) {
 			logger.error("Error in retrieving user", e);
-			//throw new UsernameNotFoundException("Error in retrieving user");
 		}
 		return user;
 	}
@@ -65,21 +67,22 @@ public class SecurityService implements UserDetailsService {
 	 * @param access an integer value representing the access of the user
 	 * @return collection of granted authorities
 	 */
-	 public Collection<GrantedAuthority> getAuthorities(Integer access) {
+	public Collection<GrantedAuthority> getAuthorities(Integer access) {
 
-			List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>(2);
-			
-			/** 	All users are granted with ROLE_USER access		*/
-			logger.debug("Grant ROLE_USER to this user");
-			authList.add(new GrantedAuthorityImpl("ROLE_USER"));
-			
-			/** 	Check if this user has admin access 
-			 		We interpret Integer(1) as an admin user		*/
-			if ( access.compareTo(1) == 0) {
-				logger.debug("Grant ROLE_ADMIN to this user");
-				authList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
-			}
+		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>(2);
+		
+		/** 	All users are granted with ROLE_USER access		*/
+	logger.debug("Grant ROLE_USER to this user");
+	authList.add(new SimpleGrantedAuthority("ROLE_USER"));
+	
+	/** 	Check if this user has admin access 
+	 		We interpret Integer(1) as an admin user		*/
+	if ( access.compareTo(1) == 0) {
+		logger.debug("Grant ROLE_ADMIN to this user");
+		authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
 
-			return authList;
-	  }
+		return authList;
+  }
+	
 }
