@@ -2,17 +2,18 @@ package org.mercury.poi.controller;
 
 import org.apache.log4j.Logger;
 import org.mercury.poi.entity.Poi;
-import org.mercury.poi.entity.User;
 import org.mercury.poi.service.PoiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PoiController {
@@ -36,17 +37,38 @@ public class PoiController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public String getDisplayPage() {
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/display/{id}", method = RequestMethod.GET)
+	public String displayPoi(@PathVariable Integer id, Model model) {
 		logger.debug("Received request to show the display page");
+		
+		logger.info("ID = " + id);
+		
+		Poi poi = poiService.get(id);
+		//poi.getImageStream();
+		
+		model.addAttribute("poi", poi);
+		
+		if(poi.getImage() == null)
+			logger.info("Image is null");
+		else {
+			String imageString = new String(Base64.encode(poi.getImage().getBytes()));
+			model.addAttribute("imageString", imageString);
+			logger.info("imageString is: " + imageString);
+		}
+		
 		return "display";
 	}
 	
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String getAddPage() {
-		logger.debug("Received request to show the add page");
-		return "add";
-	}
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String getManagePage() {
@@ -54,7 +76,31 @@ public class PoiController {
 		return "manage";
 	}
 	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String getAddPage(Model model) {
+		logger.debug("Received request to show the add page");
+		
+		model.addAttribute("poi", new Poi());
+		
+		return "add";
+	}
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult) {
+		logger.debug("Received request to add poi");
+		
+		if(bindingResult.hasErrors()) 
+			for(ObjectError error : bindingResult.getAllErrors())
+				logger.error("An error occured during upload: " + error.getCode() +
+							 " - " + error.getDefaultMessage());
+		
+		
+		poiService.add(poi);
+
+		return "add";
+	}
+	
+	/*@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public @ResponseBody String postAddPage(@RequestParam(value="name", required=true) String name, 
 											Model model) {
 		logger.debug("Received request to add poi");
@@ -65,7 +111,7 @@ public class PoiController {
 		poiService.add(poi);
 
 		return "Oh yeah";
-	}
+	}*/
 	
 	
 }

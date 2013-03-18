@@ -18,7 +18,11 @@ public class PoiService {
 		this.dao = dao;
 	}
 
+	public Poi get(Integer id) {
+		return dao.getPoi(id);
+	}
+	
 	public void add(Poi poi) {
-		dao.add(poi);
+		dao.addPoi(poi);
 	}
 }

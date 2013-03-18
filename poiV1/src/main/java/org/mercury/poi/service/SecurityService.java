@@ -9,7 +9,6 @@ import javassist.NotFoundException;
 import org.apache.log4j.Logger;
 import org.mercury.poi.dao.Dao;
 import org.mercury.poi.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -7,7 +7,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.mercury.poi.entity.Poi;
 import org.mercury.poi.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,24 +24,32 @@ public class Dao {
 		this.sessionFactory = sessionFactory;
 	}
 
+	public Poi getPoi(Integer id) {
+		logger.info("Received request to retrieve a poi from the database");
+		
+		Poi poi = null;
+		try {
+			poi = (Poi) sessionFactory.getCurrentSession().get(Poi.class, id);
+		} catch (HibernateException e) {
+			logger.error("Unable to load poi from database.", e);
+		}
+		return poi;
+	}
 	
-	public boolean add(Poi poi) {
-		logger.info("Received request to add poi to database");
+	public void addPoi(Poi poi) {
+		logger.info("Received request to add poi to database.");
 		
 		try {
 			sessionFactory.getCurrentSession().save(poi);
-			return true;
 		} catch (HibernateException e) {
 			logger.error("Unable to add poi to database.", e);
-			return false;
 		}
 	}
 	
 	public User getUser(String username) throws NotFoundException{
+		logger.info("Received request to retrieve a user from the database.");
 		
-		logger.info("Dao - getUser()");
 		User user = null;
-		
 		try {
 			user = (User) sessionFactory.getCurrentSession().get(User.class, username);
 			if(user == null)
@@ -50,12 +57,11 @@ public class Dao {
 		} catch (HibernateException e) {
 			logger.error("Unable to load user from database.", e);
 		} 
-		
 		return user;
 	}
 
-	public void addUser (User user) {
-		logger.info("Received request to add user to database");
+	public void addUser(User user) {
+		logger.info("Received request to add user to database.");
 		
 		try {
 			sessionFactory.getCurrentSession().save(user);

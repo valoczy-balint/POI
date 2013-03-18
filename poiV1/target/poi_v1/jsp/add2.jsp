@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -16,31 +15,14 @@
 	<h1>ADD</h1>
 
 	<div id="form">
-		<form:form action="/add" modelAttribute="poi" method="post" enctype="multipart/form-data">
-			<fieldset>
-			
-				<legend>Poi fields</legend>
-				
-				<p>
-					<form:label for="name" path="name">Name</form:label><br/>
-					<form:input path="name"/>
-				</p>
-				
-				<p>
-					<form:label for="image" path="image">Image</form:label>
-					<form:input type="file" path="image"/>
-				</p>
-				
-				<p>
-					<input type="submit" value="Upload"/>
-				</p>
-				
-			</fieldset>
-		</form:form>
+		<form>
+			<input type="text" id="name" /> 
+			<input type="button" value="Add" onclick="add()" />
+		</form>
 	</div>
-
-<!-- 
+	
 	<div id="result">
+		
 	</div>
 	
 	<script type="text/javascript"> 
@@ -64,6 +46,6 @@
 	}
 	
 	</script>
-	 -->
+	
 </body>
 </html>

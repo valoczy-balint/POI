@@ -13,7 +13,14 @@
 
 	<tx:annotation-driven/>
 
-	<bean id="poiService" class="org.mercury.poi.service.PoiService"/>
+	<bean id="poiService" class="org.mercury.poi.service.PoiService">
+		<property name="dao" ref="dao"></property>
+	</bean>
+	
+	<bean id="registerService" class="org.mercury.poi.service.RegisterService">
+		<property name="dao" ref="dao"></property>
+	</bean>
+		
 	<bean id="securityService" class="org.mercury.poi.service.SecurityService">
 		<property name="dao" ref="dao"></property>
 	</bean>

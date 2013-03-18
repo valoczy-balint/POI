@@ -2,4 +2,3 @@ org.mercury.poi.controller
 org.mercury.poi.dao
 org.mercury.poi.entity
 org.mercury.poi.service
-org.mercury.poiV1.controller
