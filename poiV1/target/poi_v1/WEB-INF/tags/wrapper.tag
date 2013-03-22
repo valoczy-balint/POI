@@ -20,13 +20,11 @@
     <div id="menubar">
    	  	<div class="menu_item"><a href="/poi/home">Home</a>
     	</div>
-   	  	<div class="menu_item"><a href="/poi/display">Display</a>
+   	  	<div class="menu_item"><a href="/poi/search">Search</a>
     	</div>
    	  	<div class="menu_item"><a href="/poi/add">Add</a>
     	</div>
    	  	<div class="menu_item"><a href="/poi/manage">Manage</a>
-    	</div>
-   	  	<div class="menu_item"><a href="/poi/register">Register</a>
     	</div>
     </div>
     <div id="content">
