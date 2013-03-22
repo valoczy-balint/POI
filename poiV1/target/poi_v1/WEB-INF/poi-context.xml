@@ -12,7 +12,13 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<tx:annotation-driven/>
-
+	
+	<!-- 
+	<bean id="poiController" class="org.mercury.poi.controller.PoiController">
+		<property name="poiService" ref="poiService"></property>
+	</bean>
+	 -->
+	 
 	<bean id="poiService" class="org.mercury.poi.service.PoiService">
 		<property name="dao" ref="dao"></property>
 	</bean>

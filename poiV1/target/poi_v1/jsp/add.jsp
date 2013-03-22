@@ -1,19 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="w" tagdir="/WEB-INF/tags/" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link href="css/index.css" rel="stylesheet" type="text/css"/>
 	<title>Add POI</title>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript">
-		var jq = jQuery.noConflict();
-	</script>
 </head>
 
 <body>
-	<h1>ADD</h1>
+
+<w:wrapper>
+	<h1>Add Poi</h1>
 
 	<div id="form">
 		<form:form action="/add" modelAttribute="poi" method="post" enctype="multipart/form-data">
@@ -23,12 +24,35 @@
 				
 				<p>
 					<form:label for="name" path="name">Name</form:label><br/>
-					<form:input path="name"/>
+					<form:input path="name" maxlength="50"/><br/>
 				</p>
 				
 				<p>
-					<form:label for="image" path="image">Image</form:label>
-					<form:input type="file" path="image"/>
+					<form:label for="address" path="address">Address</form:label><br/>
+					<form:input path="address" maxlength="200"/><br/>
+				</p>
+				
+				<p><!-- 
+					<form:label for="type" path="address">Type</form:label><br/>
+					<form:input path="type" maxlength="200"/><br/>
+				</p>
+				
+				<p>
+					<select name="type" path="type" >
+						    <c:forEach items="${types}" var="type">
+					        	<option value="${type}">${type}</option>
+					        
+				   		</c:forEach>
+					</select> -->
+					
+					<form:select path="type">
+						<form:options items="${types}" />
+					</form:select>
+				</p>
+				
+				<p>
+					<form:label for="image" path="image">Image</form:label><br/>
+					<form:input cssClass="fileInput" type="file" path="image"/><br/>
 				</p>
 				
 				<p>
@@ -39,31 +63,6 @@
 		</form:form>
 	</div>
 
-<!-- 
-	<div id="result">
-	</div>
-	
-	<script type="text/javascript"> 
-	
-	function add() {
-		jq(function() {
-			// Call a URL and pass two arguments
-			// Also pass a call back function
-			// See http://api.jquery.com/jQuery.post/
-			// See http://api.jquery.com/jQuery.ajax/
-			// You might find a warning in Firefox: Warning: Unexpected token in attribute selector: '!' 
-			// See http://bugs.jquery.com/ticket/7535
-			jq.post("/poi/add",	
-					{ 	
-						name:  jq("#name").val() 
-					},
-					function(data){
-						jq("#result").replaceWith('<div id="result">'+ data + '</div>');
-					});
-		});
-	}
-	
-	</script>
-	 -->
+</w:wrapper>
 </body>
 </html>

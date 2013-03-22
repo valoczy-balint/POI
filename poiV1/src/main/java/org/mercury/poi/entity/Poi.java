@@ -1,8 +1,5 @@
 package org.mercury.poi.entity;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,9 +21,24 @@ public class Poi {
 	@Column(name = "name")
 	private String name;
 	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "type")
+	private String type;
+	
+	@Column(name = "longitude")
+	private Float longitude;
+	
+	@Column(name = "latitude")
+	private Float latitude;
+	
 	@Column(name = "image")
 	@Lob
 	private CommonsMultipartFile image;
+	
+	@Column(name = "rating")
+	private Float rating;
 	
 	public Integer getId() {
 		return id;
@@ -44,15 +56,53 @@ public class Poi {
 		this.name = name;
 	}
 	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
+	}
+
+	public Float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
+
 	public CommonsMultipartFile getImage() {
 		return image;
 	}
-	
-	/*public InputStream getImageStream() throws IOException {
-		return image.getInputStream();
-	}*/
 
 	public void setImage(CommonsMultipartFile image) {
 		this.image = image;
 	}
+	
+	public Float getRating() {
+		return rating;
+	}
+
+	public void setRating(Float rating) {
+		this.rating = rating;
+	}
+	
+	
 }
