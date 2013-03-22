@@ -17,6 +17,7 @@
         	<h1>POI</h1>
         </div>
 	</header>
+	
     <div id="menubar">
    	  	<div class="menu_item"><a href="/poi/home">Home</a>
     	</div>
@@ -27,9 +28,11 @@
    	  	<div class="menu_item"><a href="/poi/manage">Manage</a>
     	</div>
     </div>
+    
     <div id="content">
 		<jsp:doBody/>
     </div>
+    
     <footer>FOOTER
     </footer>
 </div>
