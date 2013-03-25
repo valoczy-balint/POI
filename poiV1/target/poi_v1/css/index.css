@@ -86,6 +86,10 @@ header {
 	text-align: center;
 }
 
+input {
+	width: 200px;
+}
+
 .textInput {
 	width: 200px;
 }
@@ -95,10 +99,6 @@ header {
 }
 
 select, option {
-	width: 208px;
-}
-
-option :FOCUS {
 	width: 208px;
 }
 

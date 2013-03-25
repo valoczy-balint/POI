@@ -20,7 +20,7 @@
 		<commons.logging.version>1.1.1</commons.logging.version>  
 		<log4j.version>1.2.16</log4j.version>  
 		<context.path>poi</context.path>  
-		<jackson.mapper.version>1.5.6</jackson.mapper.version>
+		<jackson.version>1.5.6</jackson.version> <!-- 1.9.12 -->
 		<jetty.version>7.1.6.v20100715</jetty.version>  
 		<jaxb.version>2.1</jaxb.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
@@ -111,6 +111,8 @@
 		</dependency>
 		
 		 -->
+		             
+		 
 		<dependency>
 	    	<groupId>taglibs</groupId>
 	    	<artifactId>standard</artifactId>
@@ -129,8 +131,21 @@
 			<version>5.1.10</version>
 		</dependency>
 
-            
+		<!-- Jackson dependencies -->
+		<!--  -->
+        <dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
     	
+    	<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+    	
+    	 
 	    <!-- Spring 3 dependencies -->
 	    
 		<dependency>

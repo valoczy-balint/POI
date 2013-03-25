@@ -29,13 +29,7 @@
 	
 	function add() {
 		jq(function() {
-			// Call a URL and pass two arguments
-			// Also pass a call back function
-			// See http://api.jquery.com/jQuery.post/
-			// See http://api.jquery.com/jQuery.ajax/
-			// You might find a warning in Firefox: Warning: Unexpected token in attribute selector: '!' 
-			// See http://bugs.jquery.com/ticket/7535
-			jq.post("/poi/add",	
+			jq.post("/poi/add2",	
 					{ 	
 						name:  jq("#name").val() 
 					},
@@ -44,7 +38,6 @@
 					});
 		});
 	}
-	
 	</script>
 	
 </body>

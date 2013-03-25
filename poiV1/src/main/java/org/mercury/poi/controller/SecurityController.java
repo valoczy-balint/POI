@@ -3,7 +3,6 @@ package org.mercury.poi.controller;
 import org.apache.log4j.Logger;
 import org.mercury.poi.entity.User;
 import org.mercury.poi.service.RegisterService;
-import org.mercury.poi.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -22,14 +21,6 @@ public class SecurityController {
 	
 	@Autowired
 	private RegisterService registerService;
-	
-	/*public RegisterService getSecurityService() {
-		return registerService;
-	}
-
-	public void setregisterService(RegisterService securityService) {
-		this.registerService = securityService;
-	}*/
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)			//TODO /security/login
 	public String getLoginPage(@RequestParam(value="error", required=false) boolean error, 

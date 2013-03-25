@@ -5,11 +5,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+
+
+
+
 @Entity
+@NamedQueries({
+	@NamedQuery(
+		name = "poi.search",
+		query = "from Poi p where p.name like :name"
+	)
+})
 @Table(name = "places")
 public class Poi {
 	
@@ -94,6 +106,10 @@ public class Poi {
 
 	public void setImage(CommonsMultipartFile image) {
 		this.image = image;
+	}
+	
+	public void clearImage () {
+		this.image = null;
 	}
 	
 	public Float getRating() {

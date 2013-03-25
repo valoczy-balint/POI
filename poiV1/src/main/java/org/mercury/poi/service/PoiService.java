@@ -1,5 +1,7 @@
 package org.mercury.poi.service;
 
+import java.util.List;
+
 import org.mercury.poi.dao.Dao;
 import org.mercury.poi.entity.Poi;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +26,9 @@ public class PoiService {
 	
 	public void add(Poi poi) {
 		dao.addPoi(poi);
+	}
+
+	public List<Poi> search(Poi criteria) {
+		return dao.search(criteria);
 	}
 }

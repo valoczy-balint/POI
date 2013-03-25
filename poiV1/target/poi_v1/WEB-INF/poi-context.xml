@@ -35,6 +35,23 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
+	<!-- ****************************JAXB************************************* -->
+	
+	<!-- 
+	<bean id="Jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+				<value>org.mercury.restful2.bean.Employee</value>
+				<value>org.mercury.restful2.bean.EmployeeList</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<!-- **************************JACKSON************************************* -->
+	
+	<bean id="JacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+	
+	
 	<!-- *************************HIBERNATE************************************ -->
 
 	<bean id="propertyConfigurer"

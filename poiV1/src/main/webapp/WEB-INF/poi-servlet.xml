@@ -23,12 +23,50 @@
 	<context:component-scan base-package="org.mercury.poi" />
 	
 	<tx:annotation-driven />
-
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	    <property name="mediaTypes">
+	        <map>
+	            <entry key="json" value="application/json" />
+	            <entry key="xml" value="application/xml" />
+	        </map>
+	    </property>
+	    <property name="viewResolvers">
+	    	<list>
+	    		<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+						<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+					<property name="prefix" value="/jsp/"/>
+					<property name="suffix" value=".jsp"/>
+				</bean>
+	    	</list>
+	    </property>
+	    <property name="defaultViews">
+	        <list>
+	            <bean
+	                class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+	                <property name="objectMapper">
+	                    <ref bean="JacksonObjectMapper" />
+	                </property>
+	            </bean>
+	            <!-- <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+	                <property name="marshaller">
+	                    <ref bean="Jaxb2Marshaller" />
+	                </property>
+	            </bean> -->
+	        </list>
+	    </property>
+	    <property name="favorPathExtension" value="false" />
+	    <property name="favorParameter" value="true" />
+	    <property name="useNotAcceptableStatusCode" value="true" />
+	</bean>
+	
+	
+	<!-- 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/> -->
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 		<property name="prefix" value="/jsp/"/>
 		<property name="suffix" value=".jsp"/>
-	</bean>
+	</bean> -->
 	
 	<bean id="multipartResolver"
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -36,7 +74,7 @@
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="10000000" />
     </bean>
-
+	
 	
 
 </beans>

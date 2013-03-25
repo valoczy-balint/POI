@@ -1,9 +1,12 @@
 package org.mercury.poi.dao;
 
+import java.util.List;
+
 import javassist.NotFoundException;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.mercury.poi.entity.Poi;
 import org.mercury.poi.entity.User;
@@ -31,7 +34,7 @@ public class Dao {
 		try {
 			poi = (Poi) sessionFactory.getCurrentSession().get(Poi.class, id);
 		} catch (HibernateException e) {
-			logger.error("Unable to load poi from database.", e);
+			logger.error("Unable to load poi from database", e);
 		}
 		return poi;
 	}
@@ -68,5 +71,15 @@ public class Dao {
 		} catch (HibernateException e) {
 			logger.error("Unable to add user to database.", e);
 		}
+	}
+
+	@SuppressWarnings("unchecked")	// the result list of the query may contain any kind of object, not only Pois
+	public List<Poi> search(Poi criteria) {
+		logger.debug("Received request to search for a poi in the database");
+		
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("poi.search");
+		query.setParameter("name", "%" + criteria.getName() + "%");
+		
+		return query.list();
 	}
 }
