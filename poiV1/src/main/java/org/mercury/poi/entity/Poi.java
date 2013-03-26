@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -45,9 +45,13 @@ public class Poi {
 	@Column(name = "latitude")
 	private Float latitude;
 	
-	@Column(name = "image")
-	@Lob
+	//@Column(name = "image")
+	//@Lob
+	@Transient
 	private CommonsMultipartFile image;
+	
+	@Column(name = "imagePath")
+	private String imagePath;
 	
 	@Column(name = "rating")
 	private Float rating;
@@ -107,9 +111,17 @@ public class Poi {
 	public void setImage(CommonsMultipartFile image) {
 		this.image = image;
 	}
-	
+	/*
 	public void clearImage () {
 		this.image = null;
+	}*/
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	public Float getRating() {

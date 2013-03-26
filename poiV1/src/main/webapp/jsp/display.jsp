@@ -19,10 +19,11 @@
 				</td>
 				
 				<td>
-				<c:out value="${poi.image.getBytes()}" /><br/>
+				<img src="${poi.imagePath}"/>
+				<!--<c:out value="${poi.image.getBytes()}" /><br/>
 				<img src="${poi.image.getBytes()}"/><br/>
 				<img src="data:image/jpg;base64,<c:out value='${poi.image.getBytes().toString()}'/>" /><br/>
-				<img src="data:image;base64,<c:out value='${imageString}'/>" />
+				<img src="data:image;base64,<c:out value='${imageString}'/>" />-->
 				</td>
 			</tr>
 		</table>

@@ -1,10 +1,15 @@
 package org.mercury.poi.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -41,6 +46,9 @@ public class PoiController {
 	@Autowired
 	private PoiService poiService;
 	
+	//@Autowired
+	//private 
+		
 	/*@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String getIndexPage() {
 		logger.debug("Received request to show the home page");
@@ -100,8 +108,8 @@ public class PoiController {
 			
 			List<Poi> searchResult = poiService.search(criteria);
 			
-			for(Poi poi : searchResult)
-				poi.clearImage();
+			/*for(Poi poi : searchResult)
+				poi.clearImage();*/
 			
 			result = mapper.writeValueAsString(searchResult);
 			
@@ -198,6 +206,7 @@ public class PoiController {
 		return "add";
 	}
 	
+	/*
 	@RequestMapping(value = "/add2", method = RequestMethod.GET)		//TODO delete
 	public String getAdd(Model model) {
 
@@ -211,16 +220,36 @@ public class PoiController {
 		logger.debug("Add2");
 		
 		return "add2";
-	}
+	}*/
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult) {
+	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult, HttpServletRequest request) {
 		logger.debug("Received request to add poi");
 		
 		if(bindingResult.hasErrors()) 
 			for(ObjectError error : bindingResult.getAllErrors())
 				logger.error("An error occured during upload: " + error.getCode() +	 " - " + error.getDefaultMessage());
 
+		/*logger.debug(poi.getImage().getStorageDescription());
+		logger.debug(poi.getImage().getName());*/
+		logger.debug(poi.getImage().getOriginalFilename());
+		
+		
+		logger.debug(System.getProperty("user.home") + File.separator + "poi" + File.separator + "images" + File.separator + poi.getImage().getOriginalFilename());
+		File parent = new File(System.getProperty("user.home") + File.separator + "poi" + File.separator + "images" + File.separator);
+		File image = new File(parent + poi.getImage().getOriginalFilename());
+		try {
+			parent.mkdirs();
+			image.createNewFile();
+			poi.getImage().transferTo(image);
+		} catch (IOException e) {
+			logger.error("Unable to save image to disk", e);
+		}
+		//logger.debug("IMAGEPATH: " + image.getPath());
+		//logger.debug("CONTEXTPATH: " + request.get);
+		
+		//
+		poi.setImagePath(image.getAbsolutePath());
 		poiService.add(poi);
 
 		return "home";
