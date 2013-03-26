@@ -4,3 +4,10 @@
 *.jar
 *.war
 *.ear
+/.settings
+/target
+/.classpath
+/.project
+.copyarea.db
+/test-output
+/*.keep
