@@ -39,7 +39,7 @@ aside, nav, article, figure {
 }
 
 .container {
-	width: 800px;
+	width: 1000px;
 	background: #C0C060;
 	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
 }
@@ -110,6 +110,34 @@ footer {
 	position: relative;/* this gives IE6 hasLayout to properly clear */
 	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
 }
+
+/*	Search page */
+
+#result {
+	float: left;
+	margin: 0px auto;
+}
+
+#map {
+	border: 1px solid #000; 
+	width:300px;
+	height:380px;
+	float: left;
+}
+
+.listItem {
+	border: 1px solid silver;
+	margin: 5px;
+}
+
+tr {
+	border: 1px solid silver;
+}
+
+td {
+	width: 200px;
+}
+
 
 /* ~~ These are the columns for the layout. ~~ 
 

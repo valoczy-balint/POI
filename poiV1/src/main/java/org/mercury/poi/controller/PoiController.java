@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -85,7 +83,7 @@ public class PoiController {
 		return "search";
 	}
 	/*
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	@RequestMapping(value = "/search", method = RequestMethod.POST)			//with Jacksonmapping
 	public String postSearch(@ModelAttribute("poi") Poi criteria) {
 		logger.debug("Received request to search for search poi");
 		 

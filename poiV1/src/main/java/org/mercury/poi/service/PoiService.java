@@ -29,6 +29,19 @@ public class PoiService {
 	}
 
 	public List<Poi> search(Poi criteria) {
-		return dao.search(criteria);
+		
+		List<Poi> result = dao.search(criteria);
+		
+		for(Poi p : result)
+			if (p.getName() == null)
+				p.setName("N/A");
+			else if (p.getAddress() == null)
+				p.setAddress("N/A");
+			else if (p.getRating() == null)
+				p.setRating(0.0f);
+			else if (p.getType() == null)
+				p.setType("N/A");
+		
+		return result;
 	}
 }

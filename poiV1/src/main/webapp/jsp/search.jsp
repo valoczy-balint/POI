@@ -49,103 +49,106 @@
 				</fieldset>
 			</form:form>
 		</div>
-	
-	<div id="result" />
-	
+		
+		<div id="result" >
+			<div id="list" > </div>
+			<div id="map"> </div>
+		</div>
 	</w:wrapper>
 
-	<script type="text/javascript"> 
-	
-	function search() {
-		jq(function() {
-			jq("#result").replaceWith('<div id="result">Script called</div>');
-			jq.post("/poi/search",	
-				{ 	
-					name:  jq("#name").val(),
-					address : jq("#address").val(),
-					type:  jq("#type").val()
-				},
-				function(data) {
-					var response = jQuery.parseJSON(data);	
-					jq("#result").replaceWith('<div id="result">Script callback called</div>');
-				});
-		});
-	}
-		
-	function displayResult(data) {
-		jq("#result").replaceWith('<div id="result">asd</div>');
-		jq("#result").replaceWith('<div id="result">'+ response + '</div>');
-	}
-	
-	
-	function searchJSON() {
-		var params= {
-			name:  jq("#name").val(),
-			address: jq("#address").val(),
-			type: jq("#type").val()
-		};
-		
-		jq(function() {
-			jq.ajax({
-				url: "/poi/search",
-				type: "POST",
-				data: JSON.stringify(params),
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				beforeSend: function(x) {
-					if (x && x.overrideMimeType) {
-						x.overrideMimeType("application/j-son;charset=UTF-8");
-					}
-					jq("#result").replaceWith('<div id="result">Working</div>');
-		        },
-				success: function (data) {
-					//var response = parseJSON(data);	
-					//jq("#result").replaceWith('<div id="result">1</div>');
-					//for (var i = 0, len = data.length; i < len; ++i) {
-					//	var results = JSON.parse(json[i]);
-					//var newDiv = $("<div>" + results['1'] + results['2']  "</div>");
-					
-					jq("#searchField").hide();
-					
-					jq.each(data, function(index, listItem) {
-						jq("#result").append(
-								'<div class="listItem">' + 
-									index + " " + 
-									listItem.name + " " + 
-									listItem.address + " " + 
-									listItem.type + " " +
-									listItem.rating + 
-								'</div>'
+	<script type="text/javascript"> 	
+		function searchJSON() {
+			var params= {
+				name:  jq("#name").val(),
+				address: jq("#address").val(),
+				type: jq("#type").val()
+			};
 			
-						);
-					});
-					
-					
-					//}
-					//alert(data.address.toSource());
-					//jq("#result").replaceWith('<div id="result">'+ data[0].name + '</div>');
-					//jq("#result").replaceWith('<div id="result">2</div>');
-				},
-				error: function (data) {
-					jq("#result").replaceWith('<div id="result">Error</div>');
-				}
+			var resultClone = jq("#result").clone();									//the clone is used to restore the result div
+			
+			jq(function() {
+				jq.ajax({
+					url: "/poi/search",
+					type: "POST",
+					data: JSON.stringify(params),
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					beforeSend: function(x) {
+						if (x && x.overrideMimeType) {
+							x.overrideMimeType("application/j-son;charset=UTF-8");
+						}
+						jq("#result").replaceWith('<div id="result">Working</div>');
+			        },
+					success: function (data) {	
+						jq("#searchField").fadeOut("slow", function() {					//fade out the search field
+							jq("#result").replaceWith(resultClone);						//restore the result div
+						
+							jq("#list").hide();
+							//jq("#map").hide();
+							
+							jq.each(data, function(index, listItem) {					//process result list items
+								jq("#list").append(
+										'<div class="listItem"><table>' + 
+											'<tr>' + 
+											//'<td>' + index + '</td>' + 
+											'<td>' + listItem.name + '</td>' + 
+											'<td>' + listItem.address + '</td>' + 
+											'</tr><tr>' +
+											'<td>' + listItem.type + '</td>' +
+											'<td>' + listItem.rating + '</td>' +
+											//'<td>' + listItem.imagePath + '</td>' + 
+											'</tr>' +
+										'</table></div>'
+								);
+							});
+							
+							jq("#list").fadeIn("slow");									//fade in the created list
+							
+							var script = document.createElement("script");
+							script.type = "text/javascript";
+							script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyCBgeK9uzOoF0DNa69eXp6i-nd9N7EZczg&sensor=false&callback=initialize";
+							document.body.appendChild(script);
+							//jq("#map").fadeIn("slow");
+						});
+					},
+					error: function (data) {
+						jq("#list").replaceWith('<div id="list">Error</div>');
+					}
+				});
 			});
-		});
-	}
+		}
+					
+		function initialize()
+		{
+			var mapProp = {
+				center:new google.maps.LatLng(51.508742,-0.120850),
+				zoom:5,
+				mapTypeId:google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("map"), mapProp);
+		}
 	
-	function parseJSON(s) {
-	    return JSON.parse(s, function (key, value) {
-	        var type;
-	        if (value && typeof value === 'object') {
-	            type = value.type;
-	            if (typeof type === 'string' && typeof window[type] === 'function') {
-	                return new (window[type])(value);
-	            }
-	        }
-	        return value;
-	    });
-	}
+		function loadScript()
+		{
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyCBgeK9uzOoF0DNa69eXp6i-nd9N7EZczg&sensor=false&callback=initialize";
+			document.body.appendChild(script);
+		}
 	</script>
+	
+	<!-- 
+	<script  src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCBgeK9uzOoF0DNa69eXp6i-nd9N7EZczg&sensor=false">
+		function initialize() {
+			var mapProp = {
+					  center:new google.maps.LatLng(51.508742,-0.120850),
+					  zoom:5,
+					  mapTypeId:google.maps.MapTypeId.ROADMAP
+					  };
+			var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		}
+	</script> 
+	-->
 
 </body>
 </html>
