@@ -4,8 +4,8 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- <!DOCTYPE html> -->
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -49,7 +49,12 @@
 					
 				</fieldset>
 			</form:form>
-		
+			
+			<video src="">
+				<source src="" type="" c></source>
+			</video>
+			
+			
 			<div id="result" >
 			</div>
 		</div>
@@ -102,13 +107,17 @@
 										'<td>' + listItem.rating + '</td>' +
 										'</tr><tr>' +
 										'<td><input type="button" value="Image"' + 
-												   'class="imageBtn" id="imageBtn' + index + '"/></td>' + 
-										'<td><input type="button" value="Video" class="videoBtn"/></td>' + 
+												'class="imageBtn" id="imageBtn' + index + '"/></td>' + 
+										'<td><input type="button" value="Video"' +
+												'class="videoBtn" id="videoBtn' + index + '"/></td>' + 
 										'</tr>' +
 									'</table></div>'
 								);
 								jq("#imageBtn" + index).bind("click", function(event) {
 								    imgBtnClick(listItem.imagePath);
+								});
+								jq("#videoBtn" + index).bind("click", function(event) {
+								    videoBtnClick(listItem.videoPath);
 								});
 							});	
 							
@@ -165,23 +174,6 @@
 		}
 		
 		function imgBtnClick(imagePath) {
-
-			//jq("#multimedia").empty();
-			//var img = jq('<img class="poiImg">'); //Equivalent: $(document.createElement('img'))
-			//jq(document.createElement('img'));
-			//img.attr('src', "C:\Users\Mercury\Desktop\ZPics\Sun\1349894937789.jpg");
-			//var img = document.createDocumentFragment('img');
-			//var img = new Element('img', 
-            //  { src: 'C:\Users\Mercury\Desktop\ZPics\Sun\1349894937789.jpg', alt: 'alternate text' }); 
-			//var img = new Image(500, 500);
-			//alert(imagePath);
-
-			//img.appendTo("#multimedia");
-			
-			//jq("#multimedia").append('<img src="C:\Users\Mercury\Desktop\ZPics\Sun\1349894937789.jpg"/>');
-			
-			
-			
 			jq("#multimedia").fadeOut("slow", function() {
 				jq("#multimedia").empty();
 				
@@ -192,6 +184,24 @@
 				jq("#multimedia").fadeIn("slow");
 			});
 		}		
+		
+		function videoBtnClick(videoPath) {
+			jq("#multimedia").fadeOut("slow", function() {
+				jq("#multimedia").empty();
+				
+				//var img = new Video(500, 500);
+				//img.src = imagePath;
+				
+				
+				jq("#multimedia").append(
+						'<video width="500" height="500" autoplay controls>' +
+						'<source src="' + videoPath + '" type="video/mp4">' +
+						//'<source src="' + videoPath + '" type="video/ogg">' +
+						'</video>'
+						);
+				jq("#multimedia").fadeIn("slow");
+			});
+		}	
 	</script>
 
 </body>

@@ -53,6 +53,12 @@ public class Poi {
 	@Column(name = "imagePath")
 	private String imagePath;
 	
+	@Transient
+	private CommonsMultipartFile video;
+	
+	@Column(name = "videoPath")
+	private String videoPath;
+	
 	@Column(name = "rating")
 	private Float rating;
 	
@@ -111,10 +117,6 @@ public class Poi {
 	public void setImage(CommonsMultipartFile image) {
 		this.image = image;
 	}
-	/*
-	public void clearImage () {
-		this.image = null;
-	}*/
 	
 	public String getImagePath() {
 		return imagePath;
@@ -122,6 +124,22 @@ public class Poi {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+	
+	public CommonsMultipartFile getVideo() {
+		return video;
+	}
+
+	public void setVideo(CommonsMultipartFile video) {
+		this.video = video;
+	}
+	
+	public String getVideoPath() {
+		return videoPath;
+	}
+
+	public void setVideoPath(String videoPath) {
+		this.videoPath = videoPath;
 	}
 	
 	public Float getRating() {

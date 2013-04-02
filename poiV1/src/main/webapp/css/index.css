@@ -5,6 +5,7 @@ body {
 	margin: 0;
 	padding: 0;
 	color: #000;
+	background-image: url("../resource/dark_mosaic.png");
 }
 /* ~~ Element/tag selectors ~~ */
 ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
@@ -47,7 +48,7 @@ aside, nav, article, figure {
 /* ~~ The header is not given a width. It will extend the full width of your layout. ~~ */
 
 header {
-	background: #C0C060;
+	background: #464646;
 	height:300px;
 }
 
@@ -69,14 +70,27 @@ header {
 
 #menubar {
     width: 100%;
-	float:left;
-	background:#CC3;
+    height: 40px;
+	display:inline-block;
+	background: #464646;
+    background : -webkit-gradient(linear, left top, left bottom, from(rgb(168,168,168)), to(rgb(69,69,69)));
+    background : -moz-linear-gradient(top, rgb(168,168,168), rgb(69,69,69));
+    border-top: 2px solid #939393;
+    position: relative;
+    margin: 0 auto;	
 }
 
 .menu_item {
-	float:left;
-	width:25%;
+	display:inline-block;
+	width:200px;
 	text-align:center;
+	border: 1px solid silver;
+	margin: 5px 10px;
+}
+
+.menu_item:hover {
+	background: -webkit-gradient(radial, 50% 100%, 10, 50% 50%, 90, from(rgba(31,169,244,1)), to(rgba(0,28,78, 1)) );
+    background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
 }
 
 #content {

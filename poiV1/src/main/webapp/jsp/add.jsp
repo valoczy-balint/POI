@@ -61,6 +61,11 @@
 					<form:label for="image" path="image">Image</form:label><br/>
 					<form:input cssClass="fileInput" type="file" path="image"/><br/>
 				</p>
+			
+				<p>
+					<form:label for="video" path="video">Video</form:label><br/>
+					<form:input cssClass="fileInput" type="file" path="video"/><br/>
+				</p>
 				
 				<p>
 					<form:select path="rating">

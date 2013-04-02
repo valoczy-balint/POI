@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -160,21 +161,33 @@ public class PoiController {
 		
 		//TODO find a way to use relative path based on the context
 		String fs = File.separator;
-		File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
-		File image = new File(parent.getPath() + fs + poi.getImage().getOriginalFilename());
+		
+		
+		final String path = "C:\\dev\\springsource\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\poiV1\\resource";
+		//File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
+		
+		File image = new File(path + fs + "images" + fs + poi.getImage().getOriginalFilename());
+		File video = new File(path + fs + "videos" + fs + poi.getVideo().getOriginalFilename());
 		
 		try {
-			parent.mkdirs();
+			image.mkdirs();
+			video.mkdirs();
+			
 			image.createNewFile();
 			poi.getImage().transferTo(image);
+			
+			video.createNewFile();
+			poi.getVideo().transferTo(video);
+			
 			logger.debug("Image uploaded: " + image.getPath());
+			logger.debug("Video uploaded: " + video.getPath());
 		} catch (IOException e) {
 			logger.error("Unable to save image to disk", e);
 		}
 		
 		
-		//poi.setImagePath(image.getAbsolutePath());
-		poi.setImagePath("resource/" + poi.getImage().getOriginalFilename());
+		poi.setImagePath("resource/images/" + poi.getImage().getOriginalFilename());
+		poi.setVideoPath("resource/videos/" + poi.getVideo().getOriginalFilename());
 		poiService.add(poi);
 
 		return "home";
