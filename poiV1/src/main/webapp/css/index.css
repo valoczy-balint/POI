@@ -81,8 +81,8 @@ header {
 
 #content {
 	float:left;
-	background:#999;
 	width:100%;
+	background:#999;
 	text-align: center;
 }
 
@@ -111,17 +111,30 @@ footer {
 	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
 }
 
-/*	Search page */
+/* ~~ Search page ~~ */
 
-#result {
-	float: left;
+#searchContent {
+	float:left;
+	width: 100%;
+}
+
+#searchFieldSet {
 	margin: 0px auto;
 }
 
-#map {
-	border: 1px solid #000; 
-	width:300px;
-	height:380px;
+#result {
+	float:left;
+	margin: o auto;
+}
+
+#multimedia {
+	width:500px;
+	height:500px;
+	float: left;
+	border: 1px solid silver;
+}
+
+#list {
 	float: left;
 }
 

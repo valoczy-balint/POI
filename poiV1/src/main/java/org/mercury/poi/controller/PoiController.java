@@ -31,35 +31,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PoiController {
 	
-	/*public PoiService getPoiService() { 
-		return poiService;
-	}
-
-	public void setPoiService(PoiService poiService) {
-		this.poiService = poiService;
-	}*/
-
 	protected static Logger logger = Logger.getLogger("controller");
 	
 	@Autowired
 	private PoiService poiService;
 	
-	//@Autowired
-	//private 
-		
-	/*@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String getIndexPage() {
-		logger.debug("Received request to show the home page");
-		System.out.println("HOME");
-		return "index";
-	}*/
-	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String getHomePage() {
 		logger.debug("Received request to show the home page");
-
-		
-		
 		return "home";
 	}
 	
@@ -101,14 +80,8 @@ public class PoiController {
 		String result = null;
 		
 		try {
-			
 			criteria = mapper.readValue(request, Poi.class);
-			
 			List<Poi> searchResult = poiService.search(criteria);
-			
-			/*for(Poi poi : searchResult)
-				poi.clearImage();*/
-			
 			result = mapper.writeValueAsString(searchResult);
 			
 		} catch (JsonParseException e) {
@@ -122,33 +95,6 @@ public class PoiController {
 		logger.debug(result);
 		return result;
 	}	
-	/*
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public List<Poi> postSearchJson(@RequestBody String request) {		
-		logger.debug("Received request to search for search poi");
-		 
-		Poi criteria = new Poi();
-		ObjectMapper mapper = new ObjectMapper();
-		List<Poi>  result = null;
-		
-		try {
-			
-			criteria = mapper.readValue(request, Poi.class);
-			
-			result = poiService.search(criteria);
-			
-			
-		} catch (JsonParseException e) {
-			logger.error("Cannot parse JSON request", e);
-		} catch (JsonMappingException e) {
-			logger.error("Cannot map JSON request to Poi object", e);
-		} catch (IOException e) {
-			logger.error(e);
-		}
-		
-		
-		return result;
-	}*/
 	
 	@RequestMapping(value = "/display/{id}", method = RequestMethod.GET)
 	public String displayPoi(@PathVariable Integer id, Model model) {
@@ -203,23 +149,7 @@ public class PoiController {
 		
 		return "add";
 	}
-	
-	/*
-	@RequestMapping(value = "/add2", method = RequestMethod.GET)		//TODO delete
-	public String getAdd(Model model) {
-
-		//model.addAttribute("poi", new Poi());
 		
-		return "add2";
-	}
-	
-	@RequestMapping(value = "/add2", method = RequestMethod.POST)		//TODO delete
-	public String postAdd2(Model model) {
-		logger.debug("Add2");
-		
-		return "add2";
-	}*/
-	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult, HttpServletRequest request) {
 		logger.debug("Received request to add poi");
@@ -227,27 +157,24 @@ public class PoiController {
 		if(bindingResult.hasErrors()) 
 			for(ObjectError error : bindingResult.getAllErrors())
 				logger.error("An error occured during upload: " + error.getCode() +	 " - " + error.getDefaultMessage());
-
-		/*logger.debug(poi.getImage().getStorageDescription());
-		logger.debug(poi.getImage().getName());*/
-		logger.debug(poi.getImage().getOriginalFilename());
 		
+		//TODO find a way to use relative path based on the context
+		String fs = File.separator;
+		File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
+		File image = new File(parent.getPath() + fs + poi.getImage().getOriginalFilename());
 		
-		logger.debug(System.getProperty("user.home") + File.separator + "poi" + File.separator + "images" + File.separator + poi.getImage().getOriginalFilename());
-		File parent = new File(System.getProperty("user.home") + File.separator + "poi" + File.separator + "images" + File.separator);
-		File image = new File(parent + poi.getImage().getOriginalFilename());
 		try {
 			parent.mkdirs();
 			image.createNewFile();
 			poi.getImage().transferTo(image);
+			logger.debug("Image uploaded: " + image.getPath());
 		} catch (IOException e) {
 			logger.error("Unable to save image to disk", e);
 		}
-		//logger.debug("IMAGEPATH: " + image.getPath());
-		//logger.debug("CONTEXTPATH: " + request.get);
 		
-		//
-		poi.setImagePath(image.getAbsolutePath());
+		
+		//poi.setImagePath(image.getAbsolutePath());
+		poi.setImagePath("resource/" + poi.getImage().getOriginalFilename());
 		poiService.add(poi);
 
 		return "home";

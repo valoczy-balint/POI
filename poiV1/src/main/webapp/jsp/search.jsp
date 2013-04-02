@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- <!DOCTYPE html> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,9 +20,9 @@
 <body>
 
 	<w:wrapper>
-		<div id="searchField">
+		<div id="searchContent">
 			<form:form>
-				<fieldset>
+				<fieldset id="searchFieldSet">
 				
 					<legend>Please provide search criteria</legend>
 				<p>
@@ -43,28 +44,28 @@
 				</p>
 					
 				<p>		
-					<input type="button" value="Search" onclick="searchJSON()"/>
+					<input type="button" value="Search" onclick="searchJSON()" />
 				</p>
 					
 				</fieldset>
 			</form:form>
-		</div>
 		
-		<div id="result" >
-			<div id="list" > </div>
-			<div id="map"> </div>
+			<div id="result" >
+			</div>
 		</div>
 	</w:wrapper>
 
-	<script type="text/javascript"> 	
+	<script type="text/javascript"> 
+		var poiList = new Array();
+		var markers = new Array();
+		var infoWindows = new Array();
+		   
 		function searchJSON() {
 			var params= {
 				name:  jq("#name").val(),
 				address: jq("#address").val(),
 				type: jq("#type").val()
 			};
-			
-			var resultClone = jq("#result").clone();									//the clone is used to restore the result div
 			
 			jq(function() {
 				jq.ajax({
@@ -80,35 +81,45 @@
 						jq("#result").replaceWith('<div id="result">Working</div>');
 			        },
 					success: function (data) {	
-						jq("#searchField").fadeOut("slow", function() {					//fade out the search field
-							jq("#result").replaceWith(resultClone);						//restore the result div
+						jq.extend(true, poiList, data);										// Deep copy for usage outside the function
 						
-							jq("#list").hide();
-							//jq("#map").hide();
+						jq("#searchFieldSet").fadeOut("slow", function() {					// Fade out the search field
+							jq("#result").empty();
+							jq("#result").append('<div id="list"> </div>' +
+												 '<div id="multimedia"> </div>');
 							
-							jq.each(data, function(index, listItem) {					//process result list items
+							jq("#list").hide();												// Needed fo the fade in effect
+							jq("#multimedia").hide();
+							
+							jq.each(poiList, function(index, listItem) {					// Process result list items
 								jq("#list").append(
-										'<div class="listItem"><table>' + 
-											'<tr>' + 
-											//'<td>' + index + '</td>' + 
-											'<td>' + listItem.name + '</td>' + 
-											'<td>' + listItem.address + '</td>' + 
-											'</tr><tr>' +
-											'<td>' + listItem.type + '</td>' +
-											'<td>' + listItem.rating + '</td>' +
-											//'<td>' + listItem.imagePath + '</td>' + 
-											'</tr>' +
-										'</table></div>'
+									'<div class="listItem"><table>' + 
+										'<tr>' + 
+										'<td>' + listItem.name + '</td>' + 
+										'<td>' + listItem.address + '</td>' + 
+										'</tr><tr>' +
+										'<td>' + listItem.type + '</td>' +
+										'<td>' + listItem.rating + '</td>' +
+										'</tr><tr>' +
+										'<td><input type="button" value="Image"' + 
+												   'class="imageBtn" id="imageBtn' + index + '"/></td>' + 
+										'<td><input type="button" value="Video" class="videoBtn"/></td>' + 
+										'</tr>' +
+									'</table></div>'
 								);
-							});
+								jq("#imageBtn" + index).bind("click", function(event) {
+								    imgBtnClick(listItem.imagePath);
+								});
+							});	
 							
-							jq("#list").fadeIn("slow");									//fade in the created list
+										
+							jq("#list").fadeIn("slow");										//fade in the created list
 							
 							var script = document.createElement("script");
 							script.type = "text/javascript";
 							script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyCBgeK9uzOoF0DNa69eXp6i-nd9N7EZczg&sensor=false&callback=initialize";
 							document.body.appendChild(script);
-							//jq("#map").fadeIn("slow");
+							jq("#multimedia").fadeIn("slow");
 						});
 					},
 					error: function (data) {
@@ -118,37 +129,70 @@
 			});
 		}
 					
-		function initialize()
-		{
+		function initialize() {
 			var mapProp = {
 				center:new google.maps.LatLng(51.508742,-0.120850),
 				zoom:5,
 				mapTypeId:google.maps.MapTypeId.ROADMAP
 			};
-			var map = new google.maps.Map(document.getElementById("map"), mapProp);
+			var map = new google.maps.Map(document.getElementById("multimedia"), mapProp);
+		    
+			jq.each(poiList, function(index, poiListItem) {	
+				if((poiListItem.latitude == null) || (poiListItem.longitude == null)) {
+					//if statement somehow fucks up the eventlistener. Tried return true, false
+					//the marker in east africa is becouse of a lat=lon=null
+				} 
+					var position = new google.maps.LatLng(poiListItem.latitude, poiListItem.longitude);
+					
+					var marker = new google.maps.Marker({
+				        position: position,
+				        map: map,
+				        infoWindowIndex : index
+				    });
+		
+					var infoWindow = new google.maps.InfoWindow({
+			            content : poiListItem.name
+			        });
+					
+					infoWindows.push(infoWindow);
+			        markers.push(marker);
+				
+					google.maps.event.addListener(marker, 'click', 
+						function(event) {
+							infoWindows[this.infoWindowIndex].open(map, this);
+				    });	
+			});	
 		}
-	
-		function loadScript()
-		{
-			var script = document.createElement("script");
-			script.type = "text/javascript";
-			script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyCBgeK9uzOoF0DNa69eXp6i-nd9N7EZczg&sensor=false&callback=initialize";
-			document.body.appendChild(script);
-		}
+		
+		function imgBtnClick(imagePath) {
+
+			//jq("#multimedia").empty();
+			//var img = jq('<img class="poiImg">'); //Equivalent: $(document.createElement('img'))
+			//jq(document.createElement('img'));
+			//img.attr('src', "C:\Users\Mercury\Desktop\ZPics\Sun\1349894937789.jpg");
+			//var img = document.createDocumentFragment('img');
+			//var img = new Element('img', 
+            //  { src: 'C:\Users\Mercury\Desktop\ZPics\Sun\1349894937789.jpg', alt: 'alternate text' }); 
+			//var img = new Image(500, 500);
+			//alert(imagePath);
+
+			//img.appendTo("#multimedia");
+			
+			//jq("#multimedia").append('<img src="C:\Users\Mercury\Desktop\ZPics\Sun\1349894937789.jpg"/>');
+			
+			
+			
+			jq("#multimedia").fadeOut("slow", function() {
+				jq("#multimedia").empty();
+				
+				var img = new Image(500, 500);
+				img.src = imagePath;
+				alert(imagePath);
+				jq("#multimedia").append(img);
+				jq("#multimedia").fadeIn("slow");
+			});
+		}		
 	</script>
-	
-	<!-- 
-	<script  src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCBgeK9uzOoF0DNa69eXp6i-nd9N7EZczg&sensor=false">
-		function initialize() {
-			var mapProp = {
-					  center:new google.maps.LatLng(51.508742,-0.120850),
-					  zoom:5,
-					  mapTypeId:google.maps.MapTypeId.ROADMAP
-					  };
-			var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-		}
-	</script> 
-	-->
 
 </body>
 </html>
