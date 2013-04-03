@@ -41,40 +41,41 @@ aside, nav, article, figure {
 
 .container {
 	width: 1000px;
-	background: #C0C060;
 	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
 }
 
 /* ~~ The header is not given a width. It will extend the full width of your layout. ~~ */
 
 header {
-	background: #464646;
 	height:300px;
+	background: rgb(100, 100, 100);
+	background: rgba(100, 100, 100, 0.6);
 }
 
 #header_logo {
+	width: auto;
+	height: 250px;
 	float:left;
-	width:auto;
-	margin:25px 25px 25px 25px;
+	margin-left: 50px;
+	margin-top: 25px;
 }
 
 #header_title {
-	float:left;
-	margin: 25px 25px 25px 25px;
-	padding-top: 100px;
-	padding-bottom: 100px;
+	margin: auto auto;
+	/*padding-top: 100px;
+	padding-bottom: 100px;*/
 	text-align: center;
 	font-family:"Courier New", Courier, monospace;
-	width:60%;
+	/*width:60%;*/
 }
 
 #menubar {
     width: 100%;
-    height: 40px;
 	display:inline-block;
-	background: #464646;
-    background : -webkit-gradient(linear, left top, left bottom, from(rgb(168,168,168)), to(rgb(69,69,69)));
-    background : -moz-linear-gradient(top, rgb(168,168,168), rgb(69,69,69));
+	/*background: #464646;
+	background: rgba(70, 70, 70, 0.6);*/
+    background : -webkit-gradient(linear, left top, left bottom, from(rgb(168,168,168)), to(rgba(70, 70, 70, 0.6)));
+    background : -moz-linear-gradient(top, rgb(168,168,168), rgba(70, 70, 70, 0.6));
     border-top: 2px solid #939393;
     position: relative;
     margin: 0 auto;	
@@ -94,9 +95,12 @@ header {
 }
 
 #content {
-	float:left;
+	/*float:left;*/
+	
+	min-height: 500px;
 	width:100%;
-	background:#999;
+	background: #464646;
+	background: rgba(70, 70, 70, 0.6);
 	text-align: center;
 }
 
@@ -120,7 +124,8 @@ select, option {
 footer {
 	text-align: center;
 	padding: 10px 0;
-	background: #C0C060;
+	background: #464646;
+	background: rgba(100, 100, 100, 0.6);
 	position: relative;/* this gives IE6 hasLayout to properly clear */
 	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
 }

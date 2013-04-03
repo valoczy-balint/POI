@@ -11,8 +11,8 @@
 <body>
   <div class="container">
   	<header>
-        <div id="header_logo">
-        	<img src="resource/logo.png" width="200"/>
+        <div>
+        	<img src="resource/globe_logo.png" id="header_logo"/>
         </div>
         <div id="header_title">
         	<h1>POI</h1>
