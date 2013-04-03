@@ -27,12 +27,12 @@
 					<legend>Please provide search criteria</legend>
 				<p>
 					<label>Name</label><br/>
-					<input  id="name" maxlength="50" class="text"/><br/>
+					<input  id="name" maxlength="50" class="textInput"/><br/>
 				</p>
 				
 				<p>
 					<label>Address</label><br/>
-					<input  id="address" maxlength="200" class="text"/><br/>
+					<input  id="address" maxlength="200" class="textInput"/><br/>
 				</p>
 					
 				<p>					

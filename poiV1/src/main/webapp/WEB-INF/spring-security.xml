@@ -13,11 +13,10 @@
 		<security:intercept-url pattern="/login" access="permitAll"/>
 		<security:intercept-url pattern="/register" access="permitAll"/>
 		<security:intercept-url pattern="/search" access="permitAll"/>
-		
+
+		<security:intercept-url pattern="/manage" access="hasRole('ROLE_ADMIN')"/>
 		<!-- 
 		<security:intercept-url pattern="/add" access="hasRole('ROLE_ADMIN')"/>
-		<security:intercept-url pattern="/manage" access="hasRole('ROLE_ADMIN')"/>
-		
 		<security:intercept-url pattern="/display" access="hasRole('ROLE_USER')"/>
 		 -->
 		 

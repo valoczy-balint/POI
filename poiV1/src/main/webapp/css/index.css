@@ -32,52 +32,80 @@ a:visited {
 a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
 	text-decoration: none;
 }
-/* ~~ This fixed width container surrounds all other blocks ~~ */
-/* HTML5 tags */
-header, section, footer,
+
+
+
+/*  ~~ General ~~ */
+
+header, section, footer, 
 aside, nav, article, figure {
 	display: block;
 }
 
 .container {
+	display: block;
 	width: 1000px;
 	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
+	-moz-box-shadow: 3px 3px 4px #000;
+	-webkit-box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px #000;
 }
 
-/* ~~ The header is not given a width. It will extend the full width of your layout. ~~ */
-
 header {
+	display:block;
 	height:300px;
 	background: rgb(100, 100, 100);
 	background: rgba(100, 100, 100, 0.6);
 }
 
+#content {
+	display:block;
+	min-height: 500px;
+	background: #464646;
+	background: rgba(70, 70, 70, 0.6);
+	text-align: center;
+}
+
+footer {
+	display:block;
+	text-align: right;
+	padding: 10px 0;
+	background: rgba(100, 100, 100, 0.6);
+	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
+}
+
+/*  ~~ The header ~~ */
+
 #header_logo {
+	display:inline-block;
 	width: auto;
 	height: 250px;
-	float:left;
 	margin-left: 50px;
+	margin-right: 50px;
 	margin-top: 25px;
 }
 
 #header_title {
-	margin: auto auto;
-	/*padding-top: 100px;
-	padding-bottom: 100px;*/
+	display:inline-block;
+	color: rgba(70, 70, 70, 1);
 	text-align: center;
+	text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.4);
 	font-family:"Courier New", Courier, monospace;
-	/*width:60%;*/
+	font-size: xx-large;
+	font-style: oblique;
+    vertical-align:top;
+	height: 300px;
+	line-height: 300px;
+	width: 500px;
 }
 
+/*  ~~ The menu ~~ */
+
 #menubar {
-    width: 100%;
-	display:inline-block;
-	/*background: #464646;
-	background: rgba(70, 70, 70, 0.6);*/
+	display:block;
     background : -webkit-gradient(linear, left top, left bottom, from(rgb(168,168,168)), to(rgba(70, 70, 70, 0.6)));
     background : -moz-linear-gradient(top, rgb(168,168,168), rgba(70, 70, 70, 0.6));
-    border-top: 2px solid #939393;
-    position: relative;
+    border-top: 2px solid silver;
     margin: 0 auto;	
 }
 
@@ -86,7 +114,7 @@ header {
 	width:200px;
 	text-align:center;
 	border: 1px solid silver;
-	margin: 5px 10px;
+	margin: 5px 21px;
 }
 
 .menu_item:hover {
@@ -94,15 +122,9 @@ header {
     background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
 }
 
-#content {
-	/*float:left;*/
-	
-	min-height: 500px;
-	width:100%;
-	background: #464646;
-	background: rgba(70, 70, 70, 0.6);
-	text-align: center;
-}
+
+
+
 
 input {
 	width: 200px;
@@ -116,19 +138,16 @@ input {
 	width: 208px;
 }
 
+.dropDown {
+	
+}
+
 select, option {
 	width: 208px;
 }
 
 /* ~~ The footer ~~ */
-footer {
-	text-align: center;
-	padding: 10px 0;
-	background: #464646;
-	background: rgba(100, 100, 100, 0.6);
-	position: relative;/* this gives IE6 hasLayout to properly clear */
-	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
-}
+
 
 /* ~~ Search page ~~ */
 

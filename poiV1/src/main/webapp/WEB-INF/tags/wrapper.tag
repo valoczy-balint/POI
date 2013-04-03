@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<%@ tag description="Header-footer wrapper tag" pageEncoding="UTF-8"%>
+<%@ tag description="Header-footer wrapper tag" pageEncoding="ISO-8859-1" %>
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,10 +11,8 @@
 <body>
   <div class="container">
   	<header>
-        <div>
         	<img src="resource/globe_logo.png" id="header_logo"/>
-        </div>
-        <div id="header_title">
+        <div id="header_title" >
         	<h1>POI</h1>
         </div>
 	</header>
@@ -34,7 +32,9 @@
 		<jsp:doBody/>
     </div>
     
-    <footer>FOOTER
+    <footer>
+    	<p>Válóczy Bálint</p>
+    	<p>2012-13/2</p>
     </footer>
 </div>
 </body>
