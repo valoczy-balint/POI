@@ -49,12 +49,7 @@
 					
 				</fieldset>
 			</form:form>
-			
-			<video src="">
-				<source src="" type="" c></source>
-			</video>
-			
-			
+
 			<div id="result" >
 			</div>
 		</div>
@@ -62,6 +57,8 @@
 
 	<script type="text/javascript"> 
 		var poiList = new Array();
+		var map;
+		var mapProp;
 		var markers = new Array();
 		var infoWindows = new Array();
 		   
@@ -110,6 +107,9 @@
 												'class="imageBtn" id="imageBtn' + index + '"/></td>' + 
 										'<td><input type="button" value="Video"' +
 												'class="videoBtn" id="videoBtn' + index + '"/></td>' + 
+										'</tr><tr>' +
+										'<td><input type="button" value="Show on map"' + 
+										'class="showOnMapBtn" id="showOnMapBtn' + index + '"/></td>' + 
 										'</tr>' +
 									'</table></div>'
 								);
@@ -118,6 +118,9 @@
 								});
 								jq("#videoBtn" + index).bind("click", function(event) {
 								    videoBtnClick(listItem.videoPath);
+								});
+								jq("#showOnMapBtn" + index).bind("click", function(event) {
+									showOnMapBtnClick(listItem.name, listItem.latitude, listItem.longitude);
 								});
 							});	
 							
@@ -139,12 +142,12 @@
 		}
 					
 		function initialize() {
-			var mapProp = {
+			mapProp = {
 				center:new google.maps.LatLng(51.508742,-0.120850),
 				zoom:5,
 				mapTypeId:google.maps.MapTypeId.ROADMAP
 			};
-			var map = new google.maps.Map(document.getElementById("multimedia"), mapProp);
+			map = new google.maps.Map(document.getElementById("multimedia"), mapProp);
 		    
 			jq.each(poiList, function(index, poiListItem) {	
 				if((poiListItem.latitude == null) || (poiListItem.longitude == null)) {
@@ -179,7 +182,6 @@
 				
 				var img = new Image(500, 500);
 				img.src = imagePath;
-				alert(imagePath);
 				jq("#multimedia").append(img);
 				jq("#multimedia").fadeIn("slow");
 			});
@@ -188,11 +190,7 @@
 		function videoBtnClick(videoPath) {
 			jq("#multimedia").fadeOut("slow", function() {
 				jq("#multimedia").empty();
-				
-				//var img = new Video(500, 500);
-				//img.src = imagePath;
-				
-				
+							
 				jq("#multimedia").append(
 						'<video width="500" height="500" autoplay controls>' +
 						'<source src="' + videoPath + '" type="video/mp4">' +
@@ -202,6 +200,36 @@
 				jq("#multimedia").fadeIn("slow");
 			});
 		}	
+		
+		function showOnMapBtnClick(name, latitude, longitude) {
+			//jq("#multimedia").fadeOut("slow", function() {
+				jq("#multimedia").empty();
+				
+				//mapProp = {
+				//		center:new google.maps.LatLng(51.508742,-0.120850),
+				//		zoom:5,
+				//		mapTypeId:google.maps.MapTypeId.ROADMAP
+				//	};
+				map = new google.maps.Map(document.getElementById("multimedia"), mapProp);
+				google.maps.event.trigger(map, 'resize');
+				
+				var position = new google.maps.LatLng(latitude,longitude);
+				
+				var marker = new google.maps.Marker({
+			        position: position,
+			        map: map
+			    });
+				
+				var infoWindow = new google.maps.InfoWindow({
+		            content : name
+		        });
+				infoWindow.open(map, marker);
+				
+				map.panTo(position);
+				
+				//jq("#multimedia").fadeIn("slow");
+			//});
+		}
 	</script>
 
 </body>
