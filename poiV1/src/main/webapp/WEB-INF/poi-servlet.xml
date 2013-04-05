@@ -11,8 +11,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- To enable @RequestMapping process on type level and method level -->
+	<!-- 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
 	
 	<mvc:annotation-driven/>
 	<mvc:resources mapping="/css/**" location="/css/" />
@@ -48,11 +51,11 @@
 	                    <ref bean="JacksonObjectMapper" />
 	                </property>
 	            </bean>
-	            <!-- <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+	            <bean id="poi" class="org.springframework.web.servlet.view.xml.MarshallingView">
 	                <property name="marshaller">
-	                    <ref bean="Jaxb2Marshaller" />
+	                    <ref bean="jaxb2Marshaller" />
 	                </property>
-	            </bean> -->
+	            </bean>
 	        </list>
 	    </property>
 	    <property name="favorPathExtension" value="false" />
