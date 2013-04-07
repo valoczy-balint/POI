@@ -1,14 +1,21 @@
 package org.mercury.poi.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.Result;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.mercury.poi.entity.Poi;
+import org.mercury.poi.entity.PoiList;
 import org.mercury.poi.service.PoiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,32 +45,11 @@ public class AndroidController {
 	public void addPoi(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("Received request from an Android client to upload POI");
 		
-		Poi poi = new Poi();
+		Poi poi = buildPoiFromParams(request.getParameterMap());
 		
 		/**
 		 * Obtainig request parameters -> fields of a POI Object
 		 */
-		//The values in the requestparameters are actually String arrays
-		//For more information, refer to: http://prideafrica.blogspot.hu/2007/01/javalangclasscastexception.html
-		Map<String, String[]> params = request.getParameterMap();		
-		for(Entry<String, String[]> requestParam : params.entrySet()) 
-			try {
-				logger.info(requestParam.getKey() + " : " + requestParam.getValue()[0]);
-				if(requestParam.getKey().equals("name"))
-					poi.setName(requestParam.getValue()[0]);
-				else if(requestParam.getKey().equals("type"))
-					poi.setType(requestParam.getValue()[0]);
-				else if(requestParam.getKey().equals("address"))
-					poi.setAddress(requestParam.getValue()[0]);
-				else if(requestParam.getKey().equals("latitude"))
-					poi.setLatitude(Float.parseFloat(requestParam.getValue()[0]));
-				else if(requestParam.getKey().equals("longitude"))
-					poi.setLongitude(Float.parseFloat(requestParam.getValue()[0]));
-				else if(requestParam.getKey().equals("rating"))
-					poi.setRating(Float.parseFloat(requestParam.getValue()[0]));
-			} catch (NumberFormatException e) {
-				logger.error("Unable to parse uploaded poi's attribute:" + requestParam.getKey(), e);
-			}
 		
 		if(ServletFileUpload.isMultipartContent(request)) {
 			logger.info("Request type is multipart.");
@@ -85,6 +71,67 @@ public class AndroidController {
 		
 		poiService.add(poi);
 		response.setStatus(HttpStatus.OK.value());
+	}
+	
+	@RequestMapping(value = "/searchpoi", method = RequestMethod.POST)
+	public void searchForPoi(HttpServletRequest request, HttpServletResponse response){
+	
+		
+		Poi criteria = buildPoiFromParams(request.getParameterMap());
+		List<Poi> searchResult = poiService.search(criteria);
+		
+		if(searchResult.size() == 0) {
+			response.setStatus(HttpStatus.NO_CONTENT.value());
+			return;
+		}
+			
+		/**
+		 * Marshalling search result
+		 */
+		JAXBContext context;
+		Marshaller marshaller;
+		PoiList resultList = new PoiList(searchResult);
+		
+		try {
+			context = JAXBContext.newInstance(Poi.class, PoiList.class);
+			marshaller = context.createMarshaller();
+			marshaller.setProperty("jaxb.formatted.output", true);
+			//Result result = new javax.xml.transform.dom.DOMResult();
+			marshaller.marshal(resultList, response.getOutputStream());
+			response.setStatus(HttpStatus.OK.value());
+		} catch (JAXBException e) {
+			logger.error("Unable to marshal search results", e);
+		} catch (IOException e) {
+			logger.error("Unable to create response entity", e);
+		}
+	}
+	
+	private Poi buildPoiFromParams (Map<String, String[]> params) {
+		
+		Poi poi = new Poi();	
+		
+		//The values in the requestparameters are actually String arrays
+		//For more information, refer to: http://prideafrica.blogspot.hu/2007/01/javalangclasscastexception.html
+		for(Entry<String, String[]> requestParam : params.entrySet()) 
+			try {
+				logger.info(requestParam.getKey() + " : " + requestParam.getValue()[0]);
+				if(requestParam.getKey().equals("name"))
+					poi.setName(requestParam.getValue()[0]);
+				else if(requestParam.getKey().equals("type"))
+					poi.setType(requestParam.getValue()[0]);
+				else if(requestParam.getKey().equals("address"))
+					poi.setAddress(requestParam.getValue()[0]);
+				else if(requestParam.getKey().equals("latitude"))
+					poi.setLatitude(Float.parseFloat(requestParam.getValue()[0]));
+				else if(requestParam.getKey().equals("longitude"))
+					poi.setLongitude(Float.parseFloat(requestParam.getValue()[0]));
+				else if(requestParam.getKey().equals("rating"))
+					poi.setRating(Float.parseFloat(requestParam.getValue()[0]));
+			} catch (NumberFormatException e) {
+				logger.error("Unable to parse uploaded poi's attribute:" + requestParam.getKey(), e);
+			}
+		
+		return poi;
 	}
 	
 	/*@RequestMapping(method=RequestMethod.GET, value="/employee/{id}")

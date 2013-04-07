@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.mercury.poi.utility.MultipartFileXmlAdapter;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Entity
@@ -24,7 +25,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 })
 @Table(name = "places")
 @XmlRootElement(name="employee")
-//@XmlJavaTypeAdapter(MultipartFileXmlAdapter.class)
 public class Poi {
 	
 	@Id
@@ -47,22 +47,20 @@ public class Poi {
 	@Column(name = "latitude")
 	private Float latitude;
 	
-	//@Column(name = "image")
-	//@Lob
 	@Transient
 	@XmlTransient
-	//@XmlJavaTypeAdapter(MultipartFileXmlAdapter.class)
-	private CommonsMultipartFile image;
+	private MultipartFile image;
 	
 	@Column(name = "imagePath")
+	@XmlTransient
 	private String imagePath;
 	
 	@Transient
 	@XmlTransient
-	//@XmlJavaTypeAdapter(MultipartFileXmlAdapter.class)
-	private CommonsMultipartFile video;
+	private MultipartFile video;
 	
 	@Column(name = "videoPath")
+	@XmlTransient
 	private String videoPath;
 	
 	@Column(name = "rating")
@@ -117,11 +115,11 @@ public class Poi {
 	}
 	
 	@XmlJavaTypeAdapter(MultipartFileXmlAdapter.class)
-	public CommonsMultipartFile getImage() {
+	public MultipartFile getImage() {
 		return image;
 	}
 
-	public void setImage(CommonsMultipartFile image) {
+	public void setImage(MultipartFile image) {
 		this.image = image;
 	}
 	
@@ -134,11 +132,11 @@ public class Poi {
 	}
 	
 	@XmlJavaTypeAdapter(MultipartFileXmlAdapter.class)
-	public CommonsMultipartFile getVideo() {
+	public MultipartFile getVideo() {
 		return video;
 	}
 
-	public void setVideo(CommonsMultipartFile video) {
+	public void setVideo(MultipartFile video) {
 		this.video = video;
 	}
 	

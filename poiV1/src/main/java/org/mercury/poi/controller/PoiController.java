@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Controller
 public class PoiController {
@@ -94,7 +95,6 @@ public class PoiController {
 			logger.error(e);
 		}
 		
-		logger.debug(result);
 		return result;
 	}	
 	
@@ -111,7 +111,7 @@ public class PoiController {
 		if(poi.getImage() == null)
 			logger.info("Image is null");
 		else {
-			String imageString = new String(Base64.encode(poi.getImage().getBytes()));
+			String imageString = new String(Base64.encode(((CommonsMultipartFile)poi.getImage()).getBytes()));
 			model.addAttribute("imageString", imageString);
 			logger.info("imageString is: " + imageString);
 		}	

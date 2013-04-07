@@ -2,17 +2,17 @@ package org.mercury.poi.utility;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
-public class MultipartFileXmlAdapter extends XmlAdapter<Object, CommonsMultipartFile> {
+public class MultipartFileXmlAdapter extends XmlAdapter<Object, MultipartFile> {
 
 	@Override
-	public CommonsMultipartFile unmarshal(Object v) throws Exception {
+	public MultipartFile unmarshal(Object v) throws Exception {
 		return null;
 	}
 
 	@Override
-	public Object marshal(CommonsMultipartFile v) throws Exception {
+	public Object marshal(MultipartFile v) throws Exception {
 		return null;
 	}
 

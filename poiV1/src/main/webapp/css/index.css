@@ -6,6 +6,7 @@ body {
 	padding: 0;
 	color: #000;
 	background-image: url("../resource/dark_mosaic.png");
+	background-attachment:fixed;
 }
 /* ~~ Element/tag selectors ~~ */
 ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
@@ -57,6 +58,9 @@ header {
 	height:300px;
 	background: rgb(100, 100, 100);
 	background: rgba(100, 100, 100, 0.6);
+	background-image: url("../resource/header_bg.jpg");
+	/*background-attachment:fixed;	For Opera, Firefox*/
+	background-position: -200px -250px;
 }
 
 #content {
@@ -77,27 +81,25 @@ footer {
 
 /*  ~~ The header ~~ */
 
-#header_logo {
+/*#header_logo {
 	display:inline-block;
 	width: auto;
 	height: 250px;
 	margin-left: 50px;
 	margin-right: 50px;
 	margin-top: 25px;
-}
+}*/
 
 #header_title {
-	display:inline-block;
-    vertical-align:top;
 	color: rgba(70, 70, 70, 1);
 	text-align: center;
 	text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.4);
 	font-family:"Courier New", Courier, monospace;
 	font-size: xx-large;
 	font-style: oblique;
-	height: 300px;
-	line-height: 300px;
-	width: 500px;
+	position: relative;
+	top: 100px;
+	right: 70px;
 }
 
 /*  ~~ The menu ~~ */
@@ -119,8 +121,9 @@ footer {
 }
 
 .menu_item:hover {
-	background: -webkit-gradient(radial, 50% 100%, 10, 50% 50%, 90, from(rgba(31,169,244,1)), to(rgba(0,28,78, 1)) );
+	background: -webkit-gradient(radial, 50% 100%, 10, 50% 50%, 90, from(#D9D2D6), to(rgba(0,28,78, 1)) );
     background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
+    color: rgba(0,28,78, 1);
 }
 
 

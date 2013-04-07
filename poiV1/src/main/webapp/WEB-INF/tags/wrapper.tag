@@ -11,7 +11,7 @@
 <body>
   <div class="container">
   	<header>
-        	<img src="resource/globe_logo.png" id="header_logo"/>
+        	<!-- <img src="resource/globe_logo.png" id="header_logo"/> -->
         <div id="header_title" >
         	<h1>POI</h1>
         </div>
