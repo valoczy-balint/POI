@@ -63,6 +63,7 @@ public class PoiController {
 		return "search";
 	}
 	/*
+	 * DO NOT DELETE, THIS MAY BE USEFUL
 	@RequestMapping(value = "/search", method = RequestMethod.POST)			//with Jacksonmapping
 	public String postSearch(@ModelAttribute("poi") Poi criteria) {
 		logger.debug("Received request to search for search poi");
@@ -116,13 +117,7 @@ public class PoiController {
 		}	
 		return "display";
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String getManagePage() {
 		logger.debug("Received request to show the manage page");
@@ -158,36 +153,7 @@ public class PoiController {
 		if(bindingResult.hasErrors()) 
 			for(ObjectError error : bindingResult.getAllErrors())
 				logger.error("An error occured during upload: " + error.getCode() +	 " - " + error.getDefaultMessage());
-		
-		//TODO find a way to use relative path based on the context
-		String fs = File.separator;
-		
-		
-		final String path = "C:\\dev\\springsource\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\poiV1\\resource";
-		//File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
-		
-		File image = new File(path + fs + "images" + fs + poi.getImage().getOriginalFilename());
-		File video = new File(path + fs + "videos" + fs + poi.getVideo().getOriginalFilename());
-		
-		try {
-			image.mkdirs();
-			video.mkdirs();
-			
-			image.createNewFile();
-			poi.getImage().transferTo(image);
-			
-			video.createNewFile();
-			poi.getVideo().transferTo(video);
-			
-			logger.debug("Image uploaded: " + image.getPath());
-			logger.debug("Video uploaded: " + video.getPath());
-		} catch (IOException e) {
-			logger.error("Unable to save image to disk", e);
-		}
-		
-		
-		poi.setImagePath("resource/images/" + poi.getImage().getOriginalFilename());
-		poi.setVideoPath("resource/videos/" + poi.getVideo().getOriginalFilename());
+
 		poiService.add(poi);
 
 		return "home";

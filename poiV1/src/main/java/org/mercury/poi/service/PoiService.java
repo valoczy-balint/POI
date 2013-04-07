@@ -1,7 +1,10 @@
 package org.mercury.poi.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.mercury.poi.dao.Dao;
 import org.mercury.poi.entity.Poi;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PoiService {
 
+	protected static Logger logger = Logger.getLogger("service");
+	
 	Dao dao;
 	
 	public Dao getDao() {
@@ -25,6 +30,40 @@ public class PoiService {
 	}
 	
 	public void add(Poi poi) {
+		
+		//TODO find a way to use relative path based on the context
+		File image, video;
+		String fs = File.separator;
+		
+		final String path = "C:\\dev\\springsource\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\poiV1\\resource";
+		//File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
+		
+		try {
+			image = new File(path + fs + "images" + fs + poi.getImage().getOriginalFilename());
+			image.mkdirs();
+			image.createNewFile();
+			poi.getImage().transferTo(image);
+			logger.debug("Image uploaded: " + image.getPath());
+			poi.setImagePath("resource/images/" + poi.getImage().getOriginalFilename());
+		} catch (NullPointerException e) {
+			logger.info("No image set for the POI object.");
+		} catch (IOException e) {
+			logger.error("Unable to save image to disk", e);
+		}
+		
+		try {
+			video = new File(path + fs + "videos" + fs + poi.getVideo().getOriginalFilename());
+			video.mkdirs();
+			video.createNewFile();
+			poi.getVideo().transferTo(video);
+			logger.debug("Video uploaded: " + video.getPath());
+			poi.setVideoPath("resource/videos/" + poi.getVideo().getOriginalFilename());
+		} catch (NullPointerException e) {
+			logger.info("No video set for the POI object.");
+		} catch (IOException e) {
+			logger.error("Unable to save video to disk", e);
+		}
+
 		dao.addPoi(poi);
 	}
 

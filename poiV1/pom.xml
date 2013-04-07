@@ -20,8 +20,8 @@
 		<commons.logging.version>1.1.1</commons.logging.version>  
 		<log4j.version>1.2.16</log4j.version>  
 		<context.path>poi</context.path>  
-		<jackson.version>1.5.6</jackson.version> <!-- 1.9.12 -->
-		<jetty.version>7.1.6.v20100715</jetty.version>  
+		<jackson.version>1.5.6</jackson.version> <!-- 1.9.12
+		<jetty.version>7.1.6.v20100715</jetty.version>   -->
 		<jaxb.version>2.1</jaxb.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 	</properties>
@@ -289,7 +289,7 @@
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.1</version>
 		</dependency>           
 	
   </dependencies>

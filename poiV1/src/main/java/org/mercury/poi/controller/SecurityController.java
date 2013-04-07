@@ -48,10 +48,10 @@ public class SecurityController {
  	public @ResponseBody String registerUser(@RequestParam(value="username", required=true) String username,
  											 @RequestParam(value="password", required=true) String password,
  											 Model model) {
-		
 		logger.debug("Received request register user");
+		
 		User user = new User();
-		String encodedPassword = "pass";
+		String encodedPassword;
 		PasswordEncoder encoder = new ShaPasswordEncoder();
 		
 		try {
@@ -64,8 +64,9 @@ public class SecurityController {
 			
 		} catch (Exception e) {
 			logger.error("Unable to register user", e);
+			return "Failed to register user " + username;
 		}
 		
-		return encodedPassword;
+		return "Registered user " + username;
 	}
 }
