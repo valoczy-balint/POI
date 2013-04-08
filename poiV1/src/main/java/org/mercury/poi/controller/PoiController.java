@@ -1,12 +1,10 @@
 package org.mercury.poi.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -84,6 +82,8 @@ public class PoiController {
 		
 		try {
 			criteria = mapper.readValue(request, Poi.class);
+			if(criteria.getType().equalsIgnoreCase("Osszes"))
+				criteria.setType("");
 			List<Poi> searchResult = poiService.search(criteria);
 			result = mapper.writeValueAsString(searchResult);
 			
@@ -165,7 +165,7 @@ public class PoiController {
 		
 		try {
 			int numOfProperties = Integer.parseInt(properties.getProperty("total"));
-			for(int i = 1; i < numOfProperties+1; i++) 
+			for(int i = 0; i < numOfProperties; i++) 
 				listOfProperties.add( properties.getProperty(Integer.toString(i)) );
 		} catch (NumberFormatException e) {
 			logger.error("Unable to read types from properties file", e);

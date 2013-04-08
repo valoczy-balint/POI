@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<%@ tag description="Header-footer wrapper tag" pageEncoding="ISO-8859-1" %>
+<%@ tag description="Header-footer wrapper tag" pageEncoding="UTF-8" %>
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,14 +17,12 @@
 	</header>
 	
     <div id="menubar">
-   	  	<div class="menu_item"><a href="/poi/home">Home</a>
-    	</div>
-   	  	<div class="menu_item"><a href="/poi/search">Search</a>
-    	</div>
-   	  	<div class="menu_item"><a href="/poi/add">Add</a>
-    	</div>
-   	  	<div class="menu_item"><a href="/poi/manage">Manage</a>
-    	</div>
+    	<ul>
+    		<li class="menu_item"><a href="/poi/home"><span class="menu_text">Home</span></a></li>
+    		<li class="menu_item"><a href="/poi/search"><span class="menu_text">Search</span></a></li>
+    		<li class="menu_item"><a href="/poi/add"><span class="menu_text">Add</span></a></li>
+    		<li class="menu_item"><a href="/poi/manage"><span class="menu_text">Manage</span></a></li>
+    	</ul>
     </div>
     
     <div id="content">
@@ -33,7 +30,7 @@
     </div>
     
     <footer>
-    	<p>Válóczy Bálint</p>
+    	<p>VÃ¡lÃ³czy BÃ¡lint</p>
     	<p>2012-13/2</p>
     </footer>
 </div>

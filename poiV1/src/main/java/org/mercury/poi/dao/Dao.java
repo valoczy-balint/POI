@@ -79,6 +79,8 @@ public class Dao {
 		
 		Query query = sessionFactory.getCurrentSession().getNamedQuery("poi.search");
 		query.setParameter("name", "%" + criteria.getName() + "%");
+		query.setParameter("type", "%" + criteria.getType() + "%");
+		query.setParameter("address", "%" + criteria.getAddress() + "%");
 		
 		return query.list();
 	}

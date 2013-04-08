@@ -1,5 +1,7 @@
 package org.mercury.poi.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.transform.Result;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
@@ -77,6 +79,7 @@ public class AndroidController {
 	public void searchForPoi(HttpServletRequest request, HttpServletResponse response){
 	
 		
+		@SuppressWarnings("unchecked")
 		Poi criteria = buildPoiFromParams(request.getParameterMap());
 		List<Poi> searchResult = poiService.search(criteria);
 		

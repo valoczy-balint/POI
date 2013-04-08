@@ -14,13 +14,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.mercury.poi.utility.MultipartFileXmlAdapter;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Entity
 @NamedQueries({
 	@NamedQuery(
 		name = "poi.search",
-		query = "from Poi p where p.name like :name"
+		query = "from Poi p " +
+				"where p.name like :name and p.type like :type and p.address like :address"
 	)
 })
 @Table(name = "places")
@@ -113,7 +113,7 @@ public class Poi {
 	public void setLatitude(Float latitude) {
 		this.latitude = latitude;
 	}
-	
+
 	@XmlJavaTypeAdapter(MultipartFileXmlAdapter.class)
 	public MultipartFile getImage() {
 		return image;
@@ -122,7 +122,8 @@ public class Poi {
 	public void setImage(MultipartFile image) {
 		this.image = image;
 	}
-	
+
+	@XmlTransient
 	public String getImagePath() {
 		return imagePath;
 	}
@@ -139,7 +140,8 @@ public class Poi {
 	public void setVideo(MultipartFile video) {
 		this.video = video;
 	}
-	
+
+	@XmlTransient
 	public String getVideoPath() {
 		return videoPath;
 	}

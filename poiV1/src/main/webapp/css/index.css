@@ -24,11 +24,11 @@ a img { /* this selector removes the default blue border displayed in some brows
 /* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
 a:link {
 	color: #42413C;
-	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+	text-decoration: none; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
 }
 a:visited {
 	color: #6E6C64;
-	text-decoration: underline;
+	text-decoration: none;
 }
 a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
 	text-decoration: none;
@@ -49,8 +49,7 @@ aside, nav, article, figure {
 	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
 	-moz-box-shadow: 3px 3px 4px #000;
 	-webkit-box-shadow: 3px 3px 4px #000;
-	box-shadow: 3px 3px 4px #000;
-	
+	box-shadow: 3px 3px 4px #000;	
 }
 
 header {
@@ -91,7 +90,7 @@ footer {
 }*/
 
 #header_title {
-	color: rgba(70, 70, 70, 1);
+	color: darkred; /*rgba(70, 70, 70, 1);*/
 	text-align: center;
 	text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.4);
 	font-family:"Courier New", Courier, monospace;
@@ -118,17 +117,18 @@ footer {
 	text-align:center;
 	border: 1px solid silver;
 	margin: 5px 21px;
+	background: #D9D2D6;
 }
 
 .menu_item:hover {
-	background: -webkit-gradient(radial, 50% 100%, 10, 50% 50%, 90, from(#D9D2D6), to(rgba(0,28,78, 1)) );
-    background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(31,169,244,1) 0%, rgba(0,28,78, 1) 100%);
+	background: -webkit-gradient(radial, 50% 100%, 10, 50% 50%, 90, from(rgba(217, 210, 214, 1.0)), to(rgba(70, 70, 70, 0.6)) );
+    background: -moz-radial-gradient(center 80px 45deg, circle cover, rgba(217, 210, 214, 1.0) 50%, rgba(70, 70, 70, 0.6) 100%);
     color: rgba(0,28,78, 1);
 }
 
-
-
-
+.menu_text {
+	display: block;
+}
 
 input {
 	width: 200px;
