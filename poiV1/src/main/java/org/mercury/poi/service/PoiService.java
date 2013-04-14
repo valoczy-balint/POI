@@ -31,6 +31,9 @@ public class PoiService {
 	
 	public void add(Poi poi) {
 		
+		if(poi.getType().equalsIgnoreCase("Osszes"))
+			poi.setType("");
+		
 		//TODO find a way to use relative path based on the context
 		File image, video;
 		String fs = File.separator;
@@ -68,6 +71,9 @@ public class PoiService {
 	}
 
 	public List<Poi> search(Poi criteria) {
+		
+		if(criteria.getType().equalsIgnoreCase("Osszes"))
+			criteria.setType("");
 		
 		List<Poi> result = dao.search(criteria);
 		

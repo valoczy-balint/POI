@@ -10,8 +10,12 @@
 	</head>
 
 	<w:wrapper>
-	
-		HOME
+		<div>
+			<img src="resource/city-silhouette.png" id="homeImg"/>
+			<div id="welcomePanel">
+				<p>Welcome to Poi!</p>
+			</div>
+		</div>
 	</w:wrapper>
 	
 </html>

@@ -9,11 +9,16 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link href="css/index.css" rel="stylesheet" type="text/css"/>
+	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="resource/jquery-1.9.1.min.js"></script>
+	<script src="http://yandex.st/json2/2011-10-19/json2.js"></script>
+	<script src="resource/json2.min.js"></script>
+	
 	<script type="text/javascript">
 		var jq = jQuery.noConflict();
 	</script>
-	<script src="http://yandex.st/json2/2011-10-19/json2.js"></script>
+	
 	<title>Search</title>
 </head>
 <body>
@@ -45,7 +50,6 @@
 				<p>		
 					<input type="button" value="Search" onclick="searchJSON()" />
 				</p>
-					
 				</fieldset>
 			</form:form>
 
@@ -79,7 +83,8 @@
 						if (x && x.overrideMimeType) {
 							x.overrideMimeType("application/j-son;charset=UTF-8");
 						}
-						jq("#result").replaceWith('<div id="result">Working</div>');
+						jq("#result").replaceWith('<div id="result">Working...<br/>' +
+													'<img src="resource/loading.gif" width="30px"/></div>');
 			        },
 					success: function (data) {	
 						jq.extend(true, poiList, data);										// Deep copy for usage outside the function

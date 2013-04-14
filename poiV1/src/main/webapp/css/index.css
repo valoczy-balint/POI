@@ -68,6 +68,7 @@ header {
 	background: #464646;
 	background: rgba(70, 70, 70, 0.6);
 	text-align: center;
+	color: #AAAAAA;
 }
 
 footer {
@@ -135,11 +136,11 @@ input {
 }
 
 .textInput {
-	width: 200px;
+	width: 300px;
 }
 
 .fileInput {
-	width: 208px;
+	width: 308px;
 }
 
 .dropDown {
@@ -147,11 +148,26 @@ input {
 }
 
 select, option {
-	width: 208px;
+	width: 308px;
 }
 
 /* ~~ The footer ~~ */
 
+/* ~~ Home page ~~ */
+
+#homeImg {
+	width: 60%;
+}
+
+#welcomePanel {
+	margin: 0 auto;
+	display: block;
+	width: 60%;
+	background: #444;
+	-moz-box-shadow:    3px 3px 5px 6px #222;
+    -webkit-box-shadow: 3px 3px 5px 6px #222;
+    box-shadow:         3px 3px 5px 6px #222;
+}
 
 /* ~~ Search page ~~ */
 
@@ -177,8 +193,7 @@ select, option {
 #list {
 	display: inline-block;
     vertical-align:top;
-	
-	width:450px;
+	width: 450px;
 }
 
 .listItem {
@@ -194,6 +209,43 @@ td {
 	width: 200px;
 }
 
+/* ~~ Add page ~~ */
+
+#addForm {
+	display: inline-block;
+	width: 450px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+#addMap {
+	display: inline-block;
+	vertical-align:top;
+	margin-top: 30px;
+	width: 500px;
+	height: 500px;
+	
+}
+
+/* ~~ Manage page ~~ */
+
+#manageList {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.manageListItem {
+	border: 1px solid silver;
+	margin: 5px;
+}
+
+.manageListItem:hover {
+	border: 1px solid silver;
+	margin: 5px;
+	background-color: rgba(230, 30, 30, 0.4);
+	cursor: hand; 
+	cursor: pointer;
+}
 
 /* ~~ These are the columns for the layout. ~~ 
 

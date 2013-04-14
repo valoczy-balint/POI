@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PoiController {
@@ -61,16 +62,6 @@ public class PoiController {
 
 		return "search";
 	}
-	/*
-	 * DO NOT DELETE, THIS MAY BE USEFUL
-	@RequestMapping(value = "/search", method = RequestMethod.POST)			//with Jacksonmapping
-	public String postSearch(@ModelAttribute("poi") Poi criteria) {
-		logger.debug("Received request to search for search poi");
-		 
-		List<Poi> result = poiService.search(criteria);
-
-		return "home";
-	}*/	
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public @ResponseBody String postSearchJson(@RequestBody String request) {
@@ -82,11 +73,8 @@ public class PoiController {
 		
 		try {
 			criteria = mapper.readValue(request, Poi.class);
-			if(criteria.getType().equalsIgnoreCase("Osszes"))
-				criteria.setType("");
 			List<Poi> searchResult = poiService.search(criteria);
 			result = mapper.writeValueAsString(searchResult);
-			
 		} catch (JsonParseException e) {
 			logger.error("Cannot parse JSON request", e);
 		} catch (JsonMappingException e) {
@@ -97,6 +85,17 @@ public class PoiController {
 		
 		return result;
 	}	
+	
+	/*
+	 * DO NOT DELETE, THIS MAY BE USEFUL
+	@RequestMapping(value = "/search", method = RequestMethod.POST)			//with Jacksonmapping
+	public String postSearch(@ModelAttribute("poi") Poi criteria) {
+		logger.debug("Received request to search for search poi");
+		 
+		List<Poi> result = poiService.search(criteria);
+
+		return "home";
+	}*/	
 	
 	@RequestMapping(value = "/display/{id}", method = RequestMethod.GET)
 	public String displayPoi(@PathVariable Integer id, Model model) {
@@ -119,9 +118,35 @@ public class PoiController {
 	}
 
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
-	public String getManagePage() {
+	public String getManagePage(Model model) {
 		logger.debug("Received request to show the manage page");
+		
+		Properties properties = new Properties();
+		List<String> types = new ArrayList<String>();
+		
+		try {
+			properties = PropertiesLoaderUtils.loadAllProperties("poi.types.properties");
+			types = readProperties(properties);
+		} catch (IOException e) {
+			logger.error("Unable to load properties from file", e);
+		}
+			
+		model.addAttribute("types", types);
+		model.addAttribute("poi", new Poi());
+		
 		return "manage";
+	}
+	
+	@RequestMapping(value = "/manage", method = RequestMethod.POST)
+	public ModelAndView postEditPage(@ModelAttribute("poi") Poi criteria, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) 
+			for(ObjectError error : bindingResult.getAllErrors())
+				logger.error("An error occured during search: " + error.getCode() +	 " - " + error.getDefaultMessage());
+		
+		List<Poi> searchResult = poiService.search(criteria);
+		
+		return new ModelAndView("result", "poiList", searchResult);
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -145,19 +170,47 @@ public class PoiController {
 		
 		return "add";
 	}
-		
+	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult, HttpServletRequest request) {
+	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult) {
 		logger.debug("Received request to add poi");
 		
 		if(bindingResult.hasErrors()) 
 			for(ObjectError error : bindingResult.getAllErrors())
 				logger.error("An error occured during upload: " + error.getCode() +	 " - " + error.getDefaultMessage());
-
+		
 		poiService.add(poi);
 
 		return "home";
 	}
+	
+	/*
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public @ResponseBody String postAddJson(@RequestBody String request) {
+		logger.debug("Received request to add poi");
+		logger.debug(request); 
+		
+		Poi poi = new Poi();
+		ObjectMapper mapper = new ObjectMapper();
+		String result = "Add operation failed";
+		
+		try {
+			poi = mapper.readValue(request, Poi.class);
+			if(poi.getType().equalsIgnoreCase("Osszes"))
+				poi.setType("");
+			poiService.add(poi);
+			result = "Success";
+		} catch (JsonParseException e) {
+			logger.error("Cannot parse JSON request", e);
+		} catch (JsonMappingException e) {
+			logger.error("Cannot map JSON request to Poi object", e);
+		} catch (IOException e) {
+			logger.error(e);
+		}
+		
+		return result;
+	}
+	*/
 	
 	private List<String> readProperties(Properties properties) {
 		
