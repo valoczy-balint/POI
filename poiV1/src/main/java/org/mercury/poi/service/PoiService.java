@@ -2,11 +2,14 @@ package org.mercury.poi.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.mercury.poi.dao.Dao;
 import org.mercury.poi.entity.Poi;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 //@Service
@@ -70,6 +73,10 @@ public class PoiService {
 		dao.addPoi(poi);
 	}
 
+	public void update(Poi poi) {
+		dao.updatePoi(poi);
+	}
+	
 	public List<Poi> search(Poi criteria) {
 		
 		if(criteria.getType().equalsIgnoreCase("Osszes"))
@@ -88,5 +95,38 @@ public class PoiService {
 				p.setType("N/A");
 		
 		return result;
+	}
+
+	public int[] getRatings() {
+		int[] rating = {1, 2, 3, 4, 5};
+		return rating;
+	}
+	
+	public List<String> getTypeList() {
+		
+		Properties properties = new Properties();
+		
+		try {
+			properties = PropertiesLoaderUtils.loadAllProperties("poi.types.properties");
+		} catch (IOException e) {
+			logger.error("Unable to load properties from file", e);
+		}		
+		
+		return readProperties(properties);
+		
+	}
+	
+	private List<String> readProperties(Properties properties) {
+		
+		List<String> listOfProperties = new ArrayList<String>();
+		
+		try {
+			int numOfProperties = Integer.parseInt(properties.getProperty("total"));
+			for(int i = 0; i < numOfProperties; i++) 
+				listOfProperties.add( properties.getProperty(Integer.toString(i)) );
+		} catch (NumberFormatException e) {
+			logger.error("Unable to read types from properties file", e);
+		}	
+		return listOfProperties;
 	}
 }

@@ -47,17 +47,7 @@ public class PoiController {
 	public String getSearchPage(Model model) {
 		logger.debug("Received request to show the search page");
 		
-		Properties properties = new Properties();
-		
-		try {
-			properties = PropertiesLoaderUtils.loadAllProperties("poi.types.properties");
-		} catch (IOException e) {
-			logger.error("Unable to load properties from file", e);
-		}
-		
-		List<String> types = readProperties(properties);
-
-		model.addAttribute("types", types);
+		model.addAttribute("types", poiService.getTypeList());
 		model.addAttribute("poi", new Poi());
 
 		return "search";
@@ -97,41 +87,33 @@ public class PoiController {
 		return "home";
 	}*/	
 	
-	@RequestMapping(value = "/display/{id}", method = RequestMethod.GET)
-	public String displayPoi(@PathVariable Integer id, Model model) {
-		logger.debug("Received request to show the display page");
-		
-		logger.info("ID = " + id);
-		
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String editPoi(@PathVariable Integer id, Model model) {
+		logger.debug("Received request to edit poi (ID: " + id + ")");
+				
 		Poi poi = poiService.get(id);
 		
+		model.addAttribute("types", poiService.getTypeList());
+		model.addAttribute("rating", poiService.getRatings());
 		model.addAttribute("poi", poi);
 		
-		if(poi.getImage() == null)
-			logger.info("Image is null");
-		else {
-			String imageString = new String(Base64.encode(((CommonsMultipartFile)poi.getImage()).getBytes()));
-			model.addAttribute("imageString", imageString);
-			logger.info("imageString is: " + imageString);
-		}	
-		return "display";
+		return "edit";
+	}
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public String editPoiPost(@ModelAttribute("poi") Poi poi) {
+		logger.debug("Received request to update poi (ID: " + poi.getId() + ")");
+				
+		poiService.update(poi);
+		
+		return "home";
 	}
 
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String getManagePage(Model model) {
 		logger.debug("Received request to show the manage page");
-		
-		Properties properties = new Properties();
-		List<String> types = new ArrayList<String>();
-		
-		try {
-			properties = PropertiesLoaderUtils.loadAllProperties("poi.types.properties");
-			types = readProperties(properties);
-		} catch (IOException e) {
-			logger.error("Unable to load properties from file", e);
-		}
-			
-		model.addAttribute("types", types);
+					
+		model.addAttribute("types", poiService.getTypeList());
 		model.addAttribute("poi", new Poi());
 		
 		return "manage";
@@ -153,19 +135,8 @@ public class PoiController {
 	public String getAddPage(Model model) {
 		logger.debug("Received request to show the add page");
 		
-		Properties properties = new Properties();
-		
-		try {
-			properties = PropertiesLoaderUtils.loadAllProperties("poi.types.properties");
-		} catch (IOException e) {
-			logger.error("Unable to load properties from file", e);
-		}
-			
-		List<String> types = readProperties(properties);
-		int[] rating = {1, 2, 3, 4, 5};
-		
-		model.addAttribute("types", types);
-		model.addAttribute("rating", rating);
+		model.addAttribute("types", poiService.getTypeList());
+		model.addAttribute("rating", poiService.getRatings());
 		model.addAttribute("poi", new Poi());
 		
 		return "add";
@@ -211,20 +182,8 @@ public class PoiController {
 		return result;
 	}
 	*/
+		
 	
-	private List<String> readProperties(Properties properties) {
-		
-		List<String> listOfProperties = new ArrayList<String>();
-		
-		try {
-			int numOfProperties = Integer.parseInt(properties.getProperty("total"));
-			for(int i = 0; i < numOfProperties; i++) 
-				listOfProperties.add( properties.getProperty(Integer.toString(i)) );
-		} catch (NumberFormatException e) {
-			logger.error("Unable to read types from properties file", e);
-		}	
-		return listOfProperties;
-	}
 	
 	/*@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public @ResponseBody String postAddPage(@RequestParam(value="name", required=true) String name, 

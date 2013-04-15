@@ -49,6 +49,28 @@ public class Dao {
 		}
 	}
 	
+	public void updatePoi(Poi poi) {
+		logger.info("Received request to update poi in database.");
+		
+		try {
+			sessionFactory.getCurrentSession().update(poi);
+		} catch (HibernateException e) {
+			logger.error("Unable to add poi to database.", e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")	// the result list of the query may contain any kind of object, not only Pois
+	public List<Poi> search(Poi criteria) {
+		logger.debug("Received request to search for a poi in the database");
+		
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("poi.search");
+		query.setParameter("name", "%" + criteria.getName() + "%");
+		query.setParameter("type", "%" + criteria.getType() + "%");
+		query.setParameter("address", "%" + criteria.getAddress() + "%");
+		
+		return query.list();
+	}
+	
 	public User getUser(String username) throws NotFoundException{
 		logger.info("Received request to retrieve a user from the database.");
 		
@@ -71,17 +93,5 @@ public class Dao {
 		} catch (HibernateException e) {
 			logger.error("Unable to add user to database.", e);
 		}
-	}
-
-	@SuppressWarnings("unchecked")	// the result list of the query may contain any kind of object, not only Pois
-	public List<Poi> search(Poi criteria) {
-		logger.debug("Received request to search for a poi in the database");
-		
-		Query query = sessionFactory.getCurrentSession().getNamedQuery("poi.search");
-		query.setParameter("name", "%" + criteria.getName() + "%");
-		query.setParameter("type", "%" + criteria.getType() + "%");
-		query.setParameter("address", "%" + criteria.getAddress() + "%");
-		
-		return query.list();
 	}
 }

@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link href="css/index.css" rel="stylesheet" type="text/css"/>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="resource/jquery.js"></script>
+	<script src="resource/jquery-1.9.1.min.js"></script>
 	
 	<script type="text/javascript">
 		var jq = jQuery.noConflict();
@@ -31,7 +31,7 @@
 			</table>
 			
 			<c:forEach var="listItem" items="${poiList}">
-				<div class="manageListItem" onclick="">
+				<div class="manageListItem" onclick="window.location.replace('/poi/edit/' + ${listItem.id})">
 					<table>
 						<tr>
 							<td><c:out value="${listItem.getName()}"/></td>

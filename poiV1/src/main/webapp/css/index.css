@@ -227,6 +227,24 @@ td {
 	
 }
 
+/* ~~ Edit page ~~ */
+
+#editForm {
+	display: inline-block;
+	width: 450px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+#editMap {
+	display: inline-block;
+	vertical-align:top;
+	margin-top: 30px;
+	width: 500px;
+	height: 500px;
+	
+}
+
 /* ~~ Manage page ~~ */
 
 #manageList {
@@ -246,6 +264,8 @@ td {
 	cursor: hand; 
 	cursor: pointer;
 }
+
+
 
 /* ~~ These are the columns for the layout. ~~ 
 
