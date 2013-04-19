@@ -34,7 +34,7 @@ public class PoiService {
 	
 	public void add(Poi poi) {
 		
-		if(poi.getType().equalsIgnoreCase("Osszes"))
+		if(poi.getType() != null && poi.getType().equalsIgnoreCase("Osszes"))
 			poi.setType("");
 		
 		//TODO find a way to use relative path based on the context
