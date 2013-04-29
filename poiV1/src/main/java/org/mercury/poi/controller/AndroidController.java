@@ -1,7 +1,5 @@
 package org.mercury.poi.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
@@ -35,7 +32,7 @@ import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequ
 public class AndroidController {
 
 	protected static Logger logger = Logger.getLogger("controller");
-	private static final String XML_VIEW_NAME = "poi";
+	//private static final String XML_VIEW_NAME = "poi";
 	
 	@Autowired
 	private PoiService poiService;
@@ -43,6 +40,7 @@ public class AndroidController {
 	@Autowired
 	private Jaxb2Marshaller jaxb2Marshaller;
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/addpoi", method = RequestMethod.POST)
 	public void addPoi(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("Received request from an Android client to upload POI");

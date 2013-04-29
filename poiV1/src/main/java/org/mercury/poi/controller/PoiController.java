@@ -37,6 +37,13 @@ public class PoiController {
 	@Autowired
 	private PoiService poiService;
 	
+	/*
+	@RequestMapping(value = "/orders", method = RequestMethod.GET)
+	public String getLabor5Page() {
+		logger.debug("Received request to show the labor5 page");
+		return "orders";
+	}*/
+	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String getHomePage() {
 		logger.debug("Received request to show the home page");

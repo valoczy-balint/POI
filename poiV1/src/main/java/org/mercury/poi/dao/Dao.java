@@ -39,23 +39,27 @@ public class Dao {
 		return poi;
 	}
 	
-	public void addPoi(Poi poi) {
+	public boolean addPoi(Poi poi) {
 		logger.info("Received request to add poi to database.");
 		
 		try {
 			sessionFactory.getCurrentSession().save(poi);
+			return true;
 		} catch (HibernateException e) {
 			logger.error("Unable to add poi to database.", e);
+			return false;
 		}
 	}
 	
-	public void updatePoi(Poi poi) {
+	public boolean updatePoi(Poi poi) {
 		logger.info("Received request to update poi in database.");
 		
 		try {
 			sessionFactory.getCurrentSession().update(poi);
+			return true;
 		} catch (HibernateException e) {
 			logger.error("Unable to add poi to database.", e);
+			return false;
 		}
 	}
 	

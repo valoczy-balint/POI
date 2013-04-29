@@ -32,7 +32,7 @@ public class PoiService {
 		return dao.getPoi(id);
 	}
 	
-	public void add(Poi poi) {
+	public boolean add(Poi poi) {
 		
 		if(poi.getType() != null && poi.getType().equalsIgnoreCase("Osszes"))
 			poi.setType("");
@@ -70,17 +70,25 @@ public class PoiService {
 			logger.error("Unable to save video to disk", e);
 		}
 
-		dao.addPoi(poi);
+		return dao.addPoi(poi);
 	}
 
-	public void update(Poi poi) {
-		dao.updatePoi(poi);
+	public boolean update(Poi poi) {
+		return dao.updatePoi(poi);
 	}
 	
 	public List<Poi> search(Poi criteria) {
 		
-		if(criteria.getType().equalsIgnoreCase("Osszes"))
+		if(criteria.getName() == null)
+			criteria.setName("");
+		
+		if(criteria.getType() == null)
 			criteria.setType("");
+		else if(criteria.getType().equalsIgnoreCase("Osszes"))
+			criteria.setType("");
+		
+		if(criteria.getAddress() ==  null)
+			criteria.setAddress("");
 		
 		List<Poi> result = dao.search(criteria);
 		
