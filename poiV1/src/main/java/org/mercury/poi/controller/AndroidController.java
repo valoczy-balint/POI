@@ -1,5 +1,8 @@
 package org.mercury.poi.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.mercury.poi.entity.Poi;
 import org.mercury.poi.entity.PoiList;
@@ -20,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,6 +110,27 @@ public class AndroidController {
 		} catch (IOException e) {
 			logger.error("Unable to create response entity", e);
 		}
+	}
+	
+	@RequestMapping(value = "/getimage/{id}", method = RequestMethod.GET)
+	public void getImage (@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
+		Poi poi = poiService.get(id);
+		
+		try {
+			byte[] image = IOUtils.toByteArray(new FileInputStream(new File(poi.getImagePath())));
+			//byte[] video = IOUtils.toByteArray(new FileInputStream(new File(poi.getVideoPath())));
+			
+			response.getOutputStream().write(image);
+			//response.getOutputStream().write(video);
+			response.setStatus(HttpStatus.OK.value());
+			response.getOutputStream().close();
+		} catch (FileNotFoundException e) {
+			logger.error(e);
+			response.setStatus(HttpStatus.NO_CONTENT.value());
+		} catch (IOException e) {
+			logger.error(e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		} 
 	}
 	
 	private Poi buildPoiFromParams (Map<String, String[]> params) {
