@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.mercury.poi.dao.Dao;
 import org.mercury.poi.entity.Poi;
+import org.mercury.poi.utility.FileType;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,14 @@ public class PoiService {
 
 	protected static Logger logger = Logger.getLogger("service");
 	
+	private final String path = "C:\\dev\\springsource\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\poiV1\\resource";
+	private final String fs = File.separator;
+	
 	Dao dao;
+	
+	public String getPath() {
+		return path;
+	}
 	
 	public Dao getDao() {
 		return dao;
@@ -39,9 +47,7 @@ public class PoiService {
 		
 		//TODO find a way to use relative path based on the context
 		File image, video;
-		String fs = File.separator;
-		
-		final String path = "C:\\dev\\springsource\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\poiV1\\resource";
+
 		//File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
 		
 		try {
@@ -122,6 +128,19 @@ public class PoiService {
 		
 		return readProperties(properties);
 		
+	}
+	
+	/** Convert the value stored in the database to an actual file path
+	 * @param file the filepath from the database
+	 * @param fileType type of file to get: image or video
+	 * @return absolute filepath
+	 */
+	public String getFileAbsolutePath (String file, FileType fileType) {
+		if(file == null) 
+			return null;
+		
+		file = file.substring(file.lastIndexOf("/") + 1);
+		return path + fs + fileType.value() + fs + file;
 	}
 	
 	private List<String> readProperties(Properties properties) {

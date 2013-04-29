@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.mercury.poi.entity.Poi;
 import org.mercury.poi.entity.PoiList;
 import org.mercury.poi.service.PoiService;
+import org.mercury.poi.utility.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -117,11 +118,20 @@ public class AndroidController {
 		Poi poi = poiService.get(id);
 		
 		try {
-			byte[] image = IOUtils.toByteArray(new FileInputStream(new File(poi.getImagePath())));
+			String filePath = poiService.getFileAbsolutePath(poi.getImagePath(), FileType.IMAGE);
+			if(filePath == null) {
+				logger.error("No image found. Image path is: " + filePath);
+				response.setStatus(HttpStatus.NO_CONTENT.value());
+				return;
+			}
+			File file = new File(filePath);
+			
+			byte[] image = IOUtils.toByteArray(new FileInputStream(file));
 			//byte[] video = IOUtils.toByteArray(new FileInputStream(new File(poi.getVideoPath())));
 			
 			response.getOutputStream().write(image);
 			//response.getOutputStream().write(video);
+			
 			response.setStatus(HttpStatus.OK.value());
 			response.getOutputStream().close();
 		} catch (FileNotFoundException e) {
