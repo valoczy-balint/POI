@@ -38,10 +38,11 @@
 	<!-- ****************************JAXB************************************* -->
 	
 	
-	<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller" autowire-candidate="true" autowire="byName">
 		<property name="classesToBeBound">
 			<list>
 				<value>org.mercury.poi.entity.Poi</value>
+				<value>org.mercury.poi.entity.PoiList</value>
 			</list>
 		</property>
 	</bean>

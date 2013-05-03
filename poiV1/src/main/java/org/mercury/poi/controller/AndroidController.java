@@ -4,15 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
@@ -23,7 +24,8 @@ import org.mercury.poi.service.PoiService;
 import org.mercury.poi.utility.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.oxm.Marshaller;
+import org.springframework.oxm.XmlMappingException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,8 +46,8 @@ public class AndroidController {
 	private PoiService poiService;
 	
 	@Autowired
-	private Jaxb2Marshaller jaxb2Marshaller;
-	
+	private Marshaller marshaller; 
+		
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/addpoi", method = RequestMethod.POST)
 	public void addPoi(HttpServletRequest request, HttpServletResponse response) {
@@ -95,24 +97,29 @@ public class AndroidController {
 		/**
 		 * Marshalling search result
 		 */
-		JAXBContext context;
-		Marshaller marshaller;
+		//JAXBContext context;
+		//Marshaller marshaller;
 		PoiList resultList = new PoiList(searchResult);
 		
 		try {
-			context = JAXBContext.newInstance(Poi.class, PoiList.class);
-			marshaller = context.createMarshaller();
-			marshaller.setProperty("jaxb.formatted.output", true);
-			//Result result = new javax.xml.transform.dom.DOMResult();
-			marshaller.marshal(resultList, response.getOutputStream());
+			//context = JAXBContext.newInstance(Poi.class, PoiList.class);
+			//marshaller = context.createMarshaller();
+			//marshaller.setProperty("jaxb.formatted.output", true);
+			//marshaller.marshal(resultList, response.getOutputStream());
+			
+			OutputStream responseStream = response.getOutputStream();
+			Result result = new StreamResult(responseStream);
+			marshaller.marshal(resultList, result);
 			response.setStatus(HttpStatus.OK.value());
-		} catch (JAXBException e) {
+			responseStream.close();
+		} catch (XmlMappingException e) {
 			logger.error("Unable to marshal search results", e);
 		} catch (IOException e) {
 			logger.error("Unable to create response entity", e);
 		}
 	}
 	
+
 	@RequestMapping(value = "/getimage/{id}", method = RequestMethod.GET)
 	public void getImage (@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) {
 		Poi poi = poiService.get(id);
