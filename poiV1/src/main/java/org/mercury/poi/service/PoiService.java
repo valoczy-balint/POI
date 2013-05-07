@@ -44,36 +44,40 @@ public class PoiService {
 		
 		if(poi.getType() != null && poi.getType().equalsIgnoreCase("Osszes"))
 			poi.setType("");
+		poi = fixPosition(poi);
 		
 		//TODO find a way to use relative path based on the context
 		File image, video;
 
 		//File parent = new File("C:" + fs + "dev" + fs + "Git" + fs + "poi" + fs + "poiV1" + fs + "src" + fs + "main" + fs + "webapp" + fs + "resource");
 		
-		try {
-			image = new File(path + fs + "images" + fs + poi.getImage().getOriginalFilename());
-			image.mkdirs();
-			image.createNewFile();
-			poi.getImage().transferTo(image);
-			logger.debug("Image uploaded: " + image.getPath());
-			poi.setImagePath("resource/images/" + poi.getImage().getOriginalFilename());
-		} catch (NullPointerException e) {
-			logger.info("No image set for the POI object.");
-		} catch (IOException e) {
-			logger.error("Unable to save image to disk", e);
+		if(poi.getImage() != null && poi.getImage().getOriginalFilename() != "") {
+			try {
+				image = new File(path + fs + "images" + fs + poi.getImage().getOriginalFilename());
+				image.mkdirs();
+				image.createNewFile();
+				poi.getImage().transferTo(image);
+				logger.debug("Image uploaded: " + image.getPath());
+				poi.setImagePath("resource/images/" + poi.getImage().getOriginalFilename());
+			} catch (NullPointerException e) {
+				logger.info("No image set for the POI object.");
+			} catch (IOException e) {
+				logger.error("Unable to save image to disk", e);
+			}
 		}
-		
-		try {
-			video = new File(path + fs + "videos" + fs + poi.getVideo().getOriginalFilename());
-			video.mkdirs();
-			video.createNewFile();
-			poi.getVideo().transferTo(video);
-			logger.debug("Video uploaded: " + video.getPath());
-			poi.setVideoPath("resource/videos/" + poi.getVideo().getOriginalFilename());
-		} catch (NullPointerException e) {
-			logger.info("No video set for the POI object.");
-		} catch (IOException e) {
-			logger.error("Unable to save video to disk", e);
+		if(poi.getVideo() != null && poi.getVideo().getOriginalFilename() != "") {
+			try {
+				video = new File(path + fs + "videos" + fs + poi.getVideo().getOriginalFilename());
+				video.mkdirs();
+				video.createNewFile();
+				poi.getVideo().transferTo(video);
+				logger.debug("Video uploaded: " + video.getPath());
+				poi.setVideoPath("resource/videos/" + poi.getVideo().getOriginalFilename());
+			} catch (NullPointerException e) {
+				logger.info("No video set for the POI object.");
+			} catch (IOException e) {
+				logger.error("Unable to save video to disk", e);
+			}
 		}
 
 		return dao.addPoi(poi);
@@ -155,5 +159,18 @@ public class PoiService {
 			logger.error("Unable to read types from properties file", e);
 		}	
 		return listOfProperties;
+	}
+	
+	/**
+	 * Fixes the latitude and longitude values to be displayable on the browser map.<br/>
+	 * Common example is an upload from an Android device, which sends huge ass integers
+	 */
+	private Poi fixPosition (Poi poi) {
+		while(poi.getLatitude() > 90 || poi.getLatitude() < -90)
+			poi.setLatitude(poi.getLatitude() / 10);
+		while(poi.getLongitude() > 180 || poi.getLongitude() < -180)
+			poi.setLongitude(poi.getLongitude() / 10);
+		
+		return poi;
 	}
 }

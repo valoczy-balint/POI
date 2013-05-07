@@ -1,6 +1,7 @@
 package org.mercury.poi.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -37,12 +38,6 @@ public class PoiController {
 	@Autowired
 	private PoiService poiService;
 	
-	/*
-	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public String getLabor5Page() {
-		logger.debug("Received request to show the labor5 page");
-		return "orders";
-	}*/
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String getHomePage() {
@@ -150,13 +145,14 @@ public class PoiController {
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult) {
+	public String postAddPage(@ModelAttribute("poi") Poi poi, BindingResult bindingResult, Principal principal) {
 		logger.debug("Received request to add poi");
 		
 		if(bindingResult.hasErrors()) 
 			for(ObjectError error : bindingResult.getAllErrors())
 				logger.error("An error occured during upload: " + error.getCode() +	 " - " + error.getDefaultMessage());
 		
+		poi.setOwner(principal.getName());
 		poiService.add(poi);
 
 		return "home";

@@ -70,8 +70,10 @@ public class AndroidController {
 			Map<String, MultipartFile> files = multipartRequest.getFileMap();
 			for(Entry<String, MultipartFile> fileEntry : files.entrySet()) {
 				MultipartFile file = fileEntry.getValue();
-				logger.info("File uploaded: " + file.getOriginalFilename());
-				poi.setImage((CommonsMultipartFile)file);
+				if (file.getSize() != -1) {
+					logger.info("File uploaded: " + file.getOriginalFilename());
+					poi.setImage((CommonsMultipartFile)file);
+				}
 			}
 		} else {
 			logger.info("Non-multipart http request, no image or video will be stored");

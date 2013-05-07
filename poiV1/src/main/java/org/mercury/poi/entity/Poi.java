@@ -29,7 +29,7 @@ public class Poi {
 	
 	@Id
 	@Column(name = "idplaces")
-	@GeneratedValue()
+	@GeneratedValue
 	private Integer id;
 	
 	@Column(name = "name")
@@ -65,6 +65,9 @@ public class Poi {
 	
 	@Column(name = "rating")
 	private Float rating;
+	
+	@Column(name = "owner")
+	private String owner;
 	
 	public Integer getId() {
 		return id;
@@ -158,5 +161,11 @@ public class Poi {
 		this.rating = rating;
 	}
 	
+	public String getOwner() {
+		return owner;
+	}
 	
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
 }
