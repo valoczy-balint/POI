@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PoiService {
 
-	protected static Logger logger = Logger.getLogger("service");
+	protected static Logger logger = Logger.getLogger("Service");
 	
 	private final String path = "C:\\dev\\springsource\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp2\\wtpwebapps\\poiV1\\resource";
 	private final String fs = File.separator;
@@ -166,10 +166,12 @@ public class PoiService {
 	 * Common example is an upload from an Android device, which sends huge ass integers
 	 */
 	private Poi fixPosition (Poi poi) {
-		while(poi.getLatitude() > 90 || poi.getLatitude() < -90)
-			poi.setLatitude(poi.getLatitude() / 10);
-		while(poi.getLongitude() > 180 || poi.getLongitude() < -180)
-			poi.setLongitude(poi.getLongitude() / 10);
+		if(poi != null && poi.getLatitude() != null && poi.getLongitude() != null) {
+			while(poi.getLatitude() > 90 || poi.getLatitude() < -90)
+				poi.setLatitude(poi.getLatitude() / 10);
+			while(poi.getLongitude() > 180 || poi.getLongitude() < -180)
+				poi.setLongitude(poi.getLongitude() / 10);
+		}
 		
 		return poi;
 	}

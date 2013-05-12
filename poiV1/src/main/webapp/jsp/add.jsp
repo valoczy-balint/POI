@@ -65,6 +65,7 @@
 			</p>
 			
 			<p>
+				<form:label for="video" path="video">Rating</form:label><br/>
 				<form:select path="rating">
 					<form:options items="${rating}" />
 				</form:select>

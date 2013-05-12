@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
@@ -58,7 +57,6 @@ public class AndroidController {
 		/**
 		 * Obtainig request parameters -> fields of a POI Object
 		 */
-		
 		if(ServletFileUpload.isMultipartContent(request)) {
 			logger.info("Request type is multipart.");
 				
@@ -83,36 +81,35 @@ public class AndroidController {
 		response.setStatus(HttpStatus.OK.value());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/searchpoi", method = RequestMethod.POST)
 	public void searchForPoi(HttpServletRequest request, HttpServletResponse response){
-	
 		
-		@SuppressWarnings("unchecked")
-		Poi criteria = buildPoiFromParams(request.getParameterMap());
+		boolean correctRequest = true;
+		
+		Poi criteria = new Poi();
+		if(ServletFileUpload.isMultipartContent(request)) {		//TODO should not be multipart, temporary solution
+			logger.info("Request type is multipart.");
+				
+			criteria = buildPoiFromParams(request.getParameterMap());
+		} else correctRequest = false;
+		
 		List<Poi> searchResult = poiService.search(criteria);
-		
-		if(searchResult.size() == 0) {
-			response.setStatus(HttpStatus.NO_CONTENT.value());
-			return;
-		}
-			
+
 		/**
 		 * Marshalling search result
 		 */
-		//JAXBContext context;
-		//Marshaller marshaller;
 		PoiList resultList = new PoiList(searchResult);
 		
 		try {
-			//context = JAXBContext.newInstance(Poi.class, PoiList.class);
-			//marshaller = context.createMarshaller();
-			//marshaller.setProperty("jaxb.formatted.output", true);
-			//marshaller.marshal(resultList, response.getOutputStream());
 			
 			OutputStream responseStream = response.getOutputStream();
 			Result result = new StreamResult(responseStream);
 			marshaller.marshal(resultList, result);
-			response.setStatus(HttpStatus.OK.value());
+			if (correctRequest)
+				response.setStatus(HttpStatus.OK.value());
+			else 
+				response.setStatus(HttpStatus.BAD_REQUEST.value());
 			responseStream.close();
 		} catch (XmlMappingException e) {
 			logger.error("Unable to marshal search results", e);

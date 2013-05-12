@@ -8,5 +8,4 @@
         <mapping class="org.mercury.poi.entity.Poi" />
         <mapping class="org.mercury.poi.entity.User"/>
     </session-factory>
-	    
 </hibernate-configuration>
